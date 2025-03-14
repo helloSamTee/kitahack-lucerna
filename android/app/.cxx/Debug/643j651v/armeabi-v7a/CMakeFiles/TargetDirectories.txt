@@ -1,0 +1,2 @@
+C:/Users/User/Documents/CodingProjects/TechTitan-LucernaCarbonFootprintApp/android/app/.cxx/Debug/643j651v/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/User/Documents/CodingProjects/TechTitan-LucernaCarbonFootprintApp/android/app/.cxx/Debug/643j651v/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "UMPSAHack-jialeong (Flutter)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

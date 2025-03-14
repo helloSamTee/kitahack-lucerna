@@ -1,0 +1,9 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "cmake.sourceDirectory": "D:/(D) Documents/Hackathons/UMPSAHack/CarbonFootprintAppl/linux",
+    "files.associations": {
+        "*.rmd": "markdown",
+        "iostream": "cpp",
+        "string": "cpp"
+    }
+}
