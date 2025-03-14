@@ -1,5 +1,16 @@
 # Lucerna
 
+# How to Run the Latest Version?
+In your terminal, run `flutter clean` -> `flutter pub get` -> `flutter build apk`
+# Check List
+- RAG
+- Food Classifier
+- Where to store AI model
+- Local Storage?
+- More tab (User Profile, Add your own API token)
+- Redesign and rebuild summary page
+- Store data in firestore
+
 ## Overview
 This is a Flutter porject in Andriod Studio for implementing Lucerna - a smart eco mobile app that helps users to track, offset, and understand their carbon footprint in collaboration with the innovative Ecolight.
 
