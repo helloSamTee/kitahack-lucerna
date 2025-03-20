@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
@@ -11,6 +12,7 @@ import 'firebase_options.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'calculator/history_provider.dart'; // Import the provider
+import 'auth_provider.dart' as LucernaAuthProvider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +20,36 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => HistoryProvider()..loadHistory(), // Load on startup
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LucernaAuthProvider.AuthProvider()),
+        ChangeNotifierProvider(create: (context) => HistoryProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+
+//   // Set Firebase session persistence
+//   await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+
+//   runApp(
+//     MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider(create: (context) => LucernaAuthProvider.AuthProvider()),
+//         ChangeNotifierProvider(create: (context) => HistoryProvider()),
+//       ],
+//       child: const MyApp(),
+//     ),
+//   );
+// }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -36,6 +63,43 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<User?>(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           // Show a loading screen while checking auth state
+//           return const MaterialApp(
+//             home: Scaffold(
+//               body: Center(child: CircularProgressIndicator()),
+//             ),
+//           );
+//         }
+
+//         if (snapshot.hasData) {
+//           // User is logged in, navigate to the dashboard
+//           return MaterialApp(
+//             title: 'Lucerna',
+//             theme: appTheme,
+//             home: const dashboard(),
+//           );
+//         } else {
+//           // User is not logged in, navigate to the login page
+//           return MaterialApp(
+//             title: 'Lucerna',
+//             theme: appTheme,
+//             home: const LoginPage(),
+//           );
+//         }
+//       },
+//     );
+//   }
+// }
 
 ThemeData appTheme = ThemeData(
   useMaterial3: false,

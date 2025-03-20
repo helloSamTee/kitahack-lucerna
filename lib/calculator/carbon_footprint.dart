@@ -1,3 +1,4 @@
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
 import 'package:provider/provider.dart';
 import 'history_provider.dart'; // Import the provider
+import 'package:Lucerna/auth_provider.dart'; // Import firebase provider
 
 class CarbonFootprintTracker extends StatefulWidget {
   @override
@@ -32,12 +34,26 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
   // }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final historyProvider = Provider.of<HistoryProvider>(context, listen: false);
+      if (authProvider.user != null) {
+        historyProvider.loadHistoryFromFirestore(authProvider.user!.uid);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryProvider>(context);
 
-    return MaterialApp(
-      theme: appTheme,
-      home: Scaffold(
+    return 
+      //   MaterialApp(
+      // theme: appTheme,
+      // home: 
+      Scaffold(
           backgroundColor: const Color.fromRGBO(173, 191, 127, 1),
           body: SafeArea(
             child: Column(
@@ -81,13 +97,13 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
                 ),
                 const SizedBox(height: 50),
                 Expanded(
-                  child: _buildHistorySection(context),
+                  child: _buildHistorySection(context, historyProvider),
                 ),
               ],
             ),
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(context)),
-    );
+          bottomNavigationBar: _buildBottomNavigationBar(context));
+    // );
   }
 
   // Helper function to build category buttons
@@ -145,7 +161,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
     );
   }
 
-  Widget _buildHistorySection(BuildContext context) {
+  Widget _buildHistorySection(BuildContext context, HistoryProvider historyProvider) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: ClipRRect(
@@ -190,7 +206,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
                 //   ),
                 //),
                 Expanded(
-                  child: _buildHistoryList(),
+                  child: _buildHistoryList(historyProvider),
                 ),
               ],
             ),
@@ -231,8 +247,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
   }
 
   // Widget to build the history list dynamically
-  Widget _buildHistoryList() {
-    final historyProvider = Provider.of<HistoryProvider>(context);
+  Widget _buildHistoryList(HistoryProvider historyProvider) {
     final history = historyProvider.history;
 
     return ListView.builder(
@@ -348,6 +363,18 @@ Widget _buildBottomNavigationBar(BuildContext context) {
                         carbonFootprint: '10', showAddRecordButton: false)),
               );
             }),
+        IconButton(
+          icon: const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfile()),
+            );
+          },
+        ),
       ],
     ),
   );

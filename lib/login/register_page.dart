@@ -1,5 +1,7 @@
+import 'package:Lucerna/auth_provider.dart' as LucernaAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:Lucerna/login/login_page.dart';
 import 'package:Lucerna/main.dart';
 
@@ -32,23 +34,19 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
+      final username = _emailController.text.split('@')[0]; // Extract username from email
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
-      await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      // Use AuthProvider to register the user
+      await Provider.of<LucernaAuthProvider.AuthProvider>(context, listen: false)
+          .register(username, email, password);
 
       // Navigate to login page after successful registration
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _errorMessage = e.message;
-      });
     } catch (e) {
       setState(() {
         _errorMessage = "An error occurred. Please try again.";
@@ -173,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          padding: const EdgeInsets.symmetric(vertical: 8.5),
+          padding: const EdgeInsets.symmetric(vertical: 15.5),
         ),
         child: Text(
           'Register',

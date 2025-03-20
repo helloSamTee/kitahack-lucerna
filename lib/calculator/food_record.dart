@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'cf_summary.dart';
@@ -322,6 +323,18 @@ Widget _buildBottomNavigationBar(BuildContext context) {
                         carbonFootprint: '10', showAddRecordButton: false)),
               );
             }),
+        IconButton(
+          icon: const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfile()),
+            );
+          },
+        ),
       ],
     ),
   );

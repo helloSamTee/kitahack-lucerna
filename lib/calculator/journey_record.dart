@@ -1,3 +1,4 @@
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/calculator/cf_summary.dart';
@@ -85,7 +86,19 @@ class _JourneyRecordState extends State<journeyRecord> {
     'Average'
   ];
   String selectedFlightClass = "Average";
-  final CarbonSutraAPI api = CarbonSutraAPI();
+  // final CarbonSutraAPI api = CarbonSutraAPI();
+
+  // check carbon sutra api from user
+  late CarbonSutraAPI api;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the CarbonSutraAPI with the context
+    api = CarbonSutraAPI(context);
+  }
+  // JL
 
   Future<String> calculateCarbonFootprintFromFlight(
       String flightFrom,
@@ -426,6 +439,18 @@ class _JourneyRecordState extends State<journeyRecord> {
                           carbonFootprint: '10', showAddRecordButton: false)),
                 );
               }),
+          IconButton(
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfile()),
+              );
+            },
+          ),
         ],
       ),
     );

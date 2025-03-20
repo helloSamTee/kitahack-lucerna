@@ -1,3 +1,6 @@
+import 'package:Lucerna/auth_provider.dart';
+import 'package:Lucerna/class_models/carbon_record.dart';
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
@@ -6,6 +9,7 @@ import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/history_provider.dart';
 import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
+import 'package:Lucerna/firestore_service.dart';
 
 class CFSummaryPage extends StatelessWidget {
   final String title;
@@ -27,12 +31,16 @@ class CFSummaryPage extends StatelessWidget {
     required this.energyUsed,
   });
 
+  final FirestoreService _firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryProvider>(context);
-    return MaterialApp(
-      theme: appTheme,
-      home: Scaffold(
+    return 
+      //       MaterialApp(
+      // theme: appTheme,
+      // home: 
+      Scaffold(
         backgroundColor: Color(0xFFB7C49D), // Light green background color
         body: SafeArea(
           child: Padding(
@@ -192,8 +200,8 @@ class CFSummaryPage extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: _buildBottomNavigationBar(context),
-      ),
-    );
+      );
+    // );
   }
 
   Widget _buildRecordButton(
@@ -206,7 +214,7 @@ class CFSummaryPage extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.3,
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (label == 'Cancel') {
               Navigator.push(
                   context,
@@ -222,6 +230,33 @@ class CFSummaryPage extends StatelessWidget {
                   vehicleType,
                   distance,
                   energyUsed);
+              
+              // Add record to Firestore
+              final user = Provider.of<AuthProvider>(context, listen: false).user;
+              if (user != null) {
+                print('user.uid: ${user.uid}');
+                try {
+                  await _firestoreService.addCarbonFootprint(
+                    user.uid,
+                    CarbonRecord(
+                      title: title,
+                      type: category,
+                      value: carbon_footprint,
+                      dateTime: DateTime.now(),
+                      suggestion: suggestion,
+                      vehicleType: vehicleType,
+                      distance: distance,
+                      energyUsed: energyUsed,
+                    ),
+                  );
+                  print('Record added successfully to Firestore');
+                } catch (e) {
+                  print('Failed to add record to Firestore: $e');
+                }
+              } else {
+                print('No user is currently signed in.');
+              }
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -341,6 +376,18 @@ class CFSummaryPage extends StatelessWidget {
                   ),
                 );
               }),
+          IconButton(
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfile()),
+              );
+            },
+          ),
         ],
       ),
     );

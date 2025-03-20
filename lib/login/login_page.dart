@@ -1,7 +1,10 @@
+import 'package:Lucerna/auth_provider.dart' as lucerna_auth;
+import 'package:Lucerna/calculator/history_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/home/dashboard.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:pure_dart_ui/pure_dart_ui.dart' as ui;
@@ -32,29 +35,36 @@ class _LoginPageState extends State<LoginPage> {
       _errorMessage = null; // Reset error message on each login attempt
     });
 
-    try {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
+    if (_formKey.currentState!.validate()) {
+      try {
+        final email = _emailController.text.trim();
+        final password = _passwordController.text.trim();
 
-      final userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+        // Use AuthProvider for authentication
+        await Provider.of<lucerna_auth.AuthProvider>(context, listen: false).login(email, password);
 
-      // Navigate to dashboard on successful login
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => dashboard()),
-      );
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _errorMessage =
-            "Wrong Email or Password"; // Set error message from Firebase exception
-      });
-    } catch (e) {
-      setState(() {
-        _errorMessage = "Wrong Email or Password"; // Set general error message
-      });
+        // Check if user is authenticated
+        final user = Provider.of<lucerna_auth.AuthProvider>(context, listen: false).user;
+        if (user != null) {
+          // Load history from Firestore
+          final historyProvider = Provider.of<HistoryProvider>(context, listen: false);
+          await historyProvider.loadHistoryFromFirestore(user.uid);
+
+          // Navigate to dashboard on successful login
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => dashboard()),
+          );
+        } else {
+          setState(() {
+            _errorMessage = "Failed to login. Please try again.";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _errorMessage = "Wrong Email or Password"; // Set general error message
+        });
+      }
     }
   }
 

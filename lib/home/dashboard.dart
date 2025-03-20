@@ -1,3 +1,5 @@
+import 'package:Lucerna/auth_provider.dart';
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -486,6 +488,18 @@ class _dashboardState extends State<dashboard> {
                           carbonFootprint: '10', showAddRecordButton: false)),
                 );
               }),
+          IconButton(
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfile()),
+              );
+            },
+          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/history_provider.dart';
 import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
+import 'package:Lucerna/auth_provider.dart';
 import '../API_KEY_Config.dart';
 
 class chat extends StatefulWidget {
@@ -87,9 +89,16 @@ class _ChatState extends State<chat> {
   }
 
   Future<String> _getGeminiResponse(String userMessage) async {
+    final geminiApiKey = Provider.of<AuthProvider>(
+      context,
+      listen: false,
+    ).geminiApiKey;
+
+    final apiKeyToUse = geminiApiKey.isNotEmpty ? geminiApiKey : ApiKeyConfig.geminiApiKey;
+
     final model = GenerativeModel(
       model: 'gemini-1.5-pro',
-      apiKey: ApiKeyConfig.geminiApiKey,
+      apiKey: apiKeyToUse, 
     );
 
     String chatHistory = messages.map((msg) {
@@ -377,6 +386,18 @@ class _ChatState extends State<chat> {
                         builder: (context) => CarbonFootprintTracker()));
               }),
           IconButton(icon: Image.asset('assets/chat-b.png'), onPressed: () {}),
+          IconButton(
+          icon: const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfile()),
+            );
+          },
+        ),
         ],
       ),
     );

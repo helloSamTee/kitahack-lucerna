@@ -1,18 +1,30 @@
 import 'dart:convert';
+import 'package:Lucerna/auth_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../API_KEY_Config.dart';
 
 class CarbonSutraAPI {
+  late String apiKey;
+
+  CarbonSutraAPI(BuildContext context) {
+    // Get the API key from the AuthProvider
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    apiKey = authProvider.carbonSutraApiKey; 
+  }
+
   Future<Map<String, dynamic>?> callAPI({
     required Object inputBody,
     required String url,
   }) async {
     try {
+      print("API Key: $apiKey");
       final String baseUrl = url;
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
-          "x-rapidapi-key": ApiKeyConfig.carbonSutraApiKey,
+          "x-rapidapi-key": apiKey,
           "x-rapidapi-host": "carbonsutra1.p.rapidapi.com",
           "Content-Type": "application/x-www-form-urlencoded",
         },

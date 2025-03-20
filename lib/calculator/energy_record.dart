@@ -1,3 +1,4 @@
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/calculator/cf_summary.dart';
@@ -86,8 +87,20 @@ class _EnergyRecordState extends State<energyRecord> {
   ];
 
   String selectedCountry = "Malaysia";
+  
+  // check carbon sutra api from user
+  late CarbonSutraAPI api;
 
-  final CarbonSutraAPI api = CarbonSutraAPI();
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the CarbonSutraAPI with the context
+    api = CarbonSutraAPI(context);
+  }
+  // JL
+
+  // final CarbonSutraAPI api = CarbonSutraAPI();
   // Future<String> calculateCarbonFootprintFromEnergy(
   //     String country, String energyUsed) async {
   //   double kwh = double.tryParse(energyUsed) ?? 0;
@@ -282,6 +295,18 @@ class _EnergyRecordState extends State<energyRecord> {
                           carbonFootprint: '10', showAddRecordButton: false)),
                 );
               }),
+          IconButton(
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfile()),
+              );
+            },
+          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
 import 'package:Lucerna/chat/chat.dart';
@@ -141,6 +142,18 @@ class _ecolight_statState extends State<ecolight_stat> {
                           carbonFootprint: '10', showAddRecordButton: false)),
                 );
               }),
+          IconButton(
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfile()),
+              );
+            },
+          ),
         ],
       ),
     );
