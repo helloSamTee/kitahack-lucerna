@@ -1,3 +1,4 @@
+import 'package:Lucerna/common_widget.dart';
 import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,8 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final historyProvider = Provider.of<HistoryProvider>(context, listen: false);
+      final historyProvider =
+          Provider.of<HistoryProvider>(context, listen: false);
       if (authProvider.user != null) {
         historyProvider.loadHistoryFromFirestore(authProvider.user!.uid);
       }
@@ -49,60 +51,63 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryProvider>(context);
 
-    return 
-      //   MaterialApp(
-      // theme: appTheme,
-      // home: 
-      Scaffold(
-          backgroundColor: const Color.fromRGBO(173, 191, 127, 1),
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return
+        //   MaterialApp(
+        // theme: appTheme,
+        // home:
+        Scaffold(
+      backgroundColor: Color.fromRGBO(
+          200, 200, 200, 1), // const Color.fromRGBO(173, 191, 127, 1),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Padding(
+            //     padding: EdgeInsets.fromLTRB(30, 50, 30, 30),
+            //     child: Text(
+            //       'Track\nCarbon Footprint',
+            //       textAlign: TextAlign.center,
+            //       style: Theme.of(context)
+            //           .textTheme
+            //           .headlineLarge!
+            //           .copyWith(color: Colors.white),
+            //     )),
+            const SizedBox(height: 30),
+            Text(
+              'Add a record of the below categories:',
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Color.fromRGBO(0, 0, 0, 0.5)),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                    padding: EdgeInsets.fromLTRB(30, 50, 30, 30),
-                    child: Text(
-                      'Track\nCarbon Footprint',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge!
-                          .copyWith(color: Colors.white),
-                    )),
-                Text(
-                  'Add a record of the below categories:',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildCategoryButton(
-                        'Food',
-                        Theme.of(context).colorScheme.tertiary,
-                        'assets/food.png'),
-                    _buildCategoryButton(
-                        'Journey',
-                        Theme.of(context).colorScheme.surface,
-                        'assets/journey.png'),
-                    _buildCategoryButton(
-                        'Energy',
-                        Theme.of(context).colorScheme.surfaceBright,
-                        'assets/energy.png'),
-                  ],
-                ),
-                const SizedBox(height: 50),
-                Expanded(
-                  child: _buildHistorySection(context, historyProvider),
-                ),
+                _buildCategoryButton('Food',
+                    Theme.of(context).colorScheme.tertiary, 'assets/food.png'),
+                _buildCategoryButton(
+                    'Journey',
+                    Theme.of(context).colorScheme.surface,
+                    'assets/journey.png'),
+                _buildCategoryButton(
+                    'Energy',
+                    Theme.of(context).colorScheme.surfaceBright,
+                    'assets/energy.png'),
               ],
             ),
-          ),
-          bottomNavigationBar: _buildBottomNavigationBar(context));
+            const SizedBox(height: 50),
+            Expanded(
+              child: _buildHistorySection(context, historyProvider),
+            ),
+          ],
+        ),
+      ),
+      appBar: CommonAppBar(title: "Track Carbon Footprint"),
+      bottomNavigationBar:
+          CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
+    );
     // );
   }
 
@@ -161,7 +166,8 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
     );
   }
 
-  Widget _buildHistorySection(BuildContext context, HistoryProvider historyProvider) {
+  Widget _buildHistorySection(
+      BuildContext context, HistoryProvider historyProvider) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: ClipRRect(
@@ -318,70 +324,6 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
     );
   }
 }
-
-Widget _buildBottomNavigationBar(BuildContext context) {
-  return BottomAppBar(
-    color: Color.fromRGBO(173, 191, 127, 1),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-            icon: const Icon(
-              Icons.pie_chart,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => dashboard()),
-              );
-            }),
-        IconButton(
-            icon: const Icon(
-              Icons.lightbulb,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ecolight_stat()),
-              );
-            }),
-        IconButton(
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.black,
-            ),
-            onPressed: () {}),
-        IconButton(
-            icon: Image.asset('assets/chat-w.png'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => chat(
-                        carbonFootprint: '10', showAddRecordButton: false)),
-              );
-            }),
-        IconButton(
-          icon: const Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserProfile()),
-            );
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-
-
 
 // SingleChildScrollView(
 //                   child: Column(

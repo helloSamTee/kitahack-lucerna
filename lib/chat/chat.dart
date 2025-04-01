@@ -1,3 +1,4 @@
+import 'package:Lucerna/common_widget.dart';
 import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -94,11 +95,12 @@ class _ChatState extends State<chat> {
       listen: false,
     ).geminiApiKey;
 
-    final apiKeyToUse = geminiApiKey.isNotEmpty ? geminiApiKey : ApiKeyConfig.geminiApiKey;
+    final apiKeyToUse =
+        geminiApiKey.isNotEmpty ? geminiApiKey : ApiKeyConfig.geminiApiKey;
 
     final model = GenerativeModel(
       model: 'gemini-1.5-pro',
-      apiKey: apiKeyToUse, 
+      apiKey: apiKeyToUse,
     );
 
     String chatHistory = messages.map((msg) {
@@ -150,20 +152,21 @@ class _ChatState extends State<chat> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
-                Text(
-                  'Chat with AI',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge!
-                      .copyWith(color: Theme.of(context).colorScheme.primary),
-                ),
+                // Text(
+                //   'Chat with AI',
+                //   textAlign: TextAlign.center,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .headlineMedium!
+                //       .copyWith(color: Theme.of(context).colorScheme.primary),
+                // ),
                 const SizedBox(height: 30),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFB7C49D), // Green box
+                      color: Color.fromRGBO(200, 200, 200,
+                          1), // const Color(0xFFB7C49D), // Green box
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -230,7 +233,9 @@ class _ChatState extends State<chat> {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomNavigationBar(context),
+        appBar: CommonAppBar(title: "Chat with AI"),
+        bottomNavigationBar:
+            CommonBottomNavigationBar(selectedTab: BottomTab.chat),
       ),
     );
   }
@@ -351,54 +356,6 @@ class _ChatState extends State<chat> {
             color: isUserMessage ? Colors.black : Colors.black87,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return BottomAppBar(
-      color: const Color.fromRGBO(173, 191, 127, 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: const Icon(Icons.pie_chart, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dashboard()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(Icons.lightbulb, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ecolight_stat()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(Icons.edit, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CarbonFootprintTracker()));
-              }),
-          IconButton(icon: Image.asset('assets/chat-b.png'), onPressed: () {}),
-          IconButton(
-          icon: const Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserProfile()),
-            );
-          },
-        ),
-        ],
       ),
     );
   }

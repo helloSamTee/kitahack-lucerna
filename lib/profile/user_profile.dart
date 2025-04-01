@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Lucerna/calculator/carbon_footprint.dart';
+import 'package:Lucerna/common_widget.dart';
 import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/home/dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,25 +19,27 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> with SingleTickerProviderStateMixin {
+class _UserProfileState extends State<UserProfile>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _geminiApiKeyController = TextEditingController();
-  final TextEditingController _carbonSutraApiKeyController = TextEditingController();
+  final TextEditingController _carbonSutraApiKeyController =
+      TextEditingController();
 
   bool _isApiKeyVisible = false;
   bool _isEditingApiKeys = false; // Flag to control edit mode for API keys
   bool _isUpdating = false;
-
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
 
-    final authProvider = Provider.of<LucernaAuthProvider.AuthProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<LucernaAuthProvider.AuthProvider>(context, listen: false);
     if (authProvider.user != null) {
       _usernameController.text = authProvider.user!.username;
       _emailController.text = authProvider.user!.email;
@@ -50,7 +53,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
           final data = userDoc.data();
           setState(() {
             _geminiApiKeyController.text = data?['geminiApiKey'] ?? '';
-            _carbonSutraApiKeyController.text = data?['carbonSutraApiKey'] ?? '';
+            _carbonSutraApiKeyController.text =
+                data?['carbonSutraApiKey'] ?? '';
           });
         }
       }).catchError((error) {
@@ -123,57 +127,66 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _isUpdating ? null : () async {
-                setState(() {
-                  _isUpdating = true;
-                });
-                final newUsername = _usernameController.text.trim();
-                final newEmail = _emailController.text.trim();
+              onPressed: _isUpdating
+                  ? null
+                  : () async {
+                      setState(() {
+                        _isUpdating = true;
+                      });
+                      final newUsername = _usernameController.text.trim();
+                      final newEmail = _emailController.text.trim();
 
-                final authProvider = Provider.of<LucernaAuthProvider.AuthProvider>(context, listen: false);
-                final uid = FirebaseAuth.instance.currentUser?.uid;
+                      final authProvider =
+                          Provider.of<LucernaAuthProvider.AuthProvider>(context,
+                              listen: false);
+                      final uid = FirebaseAuth.instance.currentUser?.uid;
 
-                if (uid != null) {
-                  bool updateResult = await authProvider.updateEmail(newEmail);
-                  if (updateResult) {
-                    // Also update username in Firestore if needed:
-                    await FirebaseFirestore.instance.collection('users').doc(uid).update({
-                      'username': newUsername,
-                    });
-                    // Optionally update local state in AuthProvider if you have an updateUser method.
-                    setState(() {
-                      _usernameController.text = newUsername;
-                      _emailController.text = newEmail;
-                      _isUpdating = false;
-                    });
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Profile Updated"),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                  } else {
-                    setState(() {
-                      _isUpdating = false;
-                    });
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Error updating profile")),
-                    );
-                  }
-                } else {
-                  setState(() {
-                    _isUpdating = false;
-                  });
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("User not found")),
-                  );
-                }
-              },
+                      if (uid != null) {
+                        bool updateResult =
+                            await authProvider.updateEmail(newEmail);
+                        if (updateResult) {
+                          // Also update username in Firestore if needed:
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .update({
+                            'username': newUsername,
+                          });
+                          // Optionally update local state in AuthProvider if you have an updateUser method.
+                          setState(() {
+                            _usernameController.text = newUsername;
+                            _emailController.text = newEmail;
+                            _isUpdating = false;
+                          });
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Profile Updated"),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                            ),
+                          );
+                        } else {
+                          setState(() {
+                            _isUpdating = false;
+                          });
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error updating profile")),
+                          );
+                        }
+                      } else {
+                        setState(() {
+                          _isUpdating = false;
+                        });
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("User not found")),
+                        );
+                      }
+                    },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
                 minimumSize: Size(double.infinity, 50),
               ),
               child: _isUpdating
@@ -187,8 +200,10 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
   }
 
   void _showEditPasswordDialog() {
-    final TextEditingController _newPasswordController = TextEditingController();
-    final TextEditingController _confirmPasswordController = TextEditingController();
+    final TextEditingController _newPasswordController =
+        TextEditingController();
+    final TextEditingController _confirmPasswordController =
+        TextEditingController();
 
     showModalBottomSheet(
       context: context,
@@ -230,7 +245,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                           decoration: InputDecoration(
                             labelText: "New Password",
                             border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 12),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -240,7 +256,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                           decoration: InputDecoration(
                             labelText: "Confirm Password",
                             border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 12),
                           ),
                         ),
                       ],
@@ -250,13 +267,15 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                   if (errorMessage.isNotEmpty)
                     Text(
                       errorMessage,
-                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
                     ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
                       final newPassword = _newPasswordController.text.trim();
-                      final confirmPassword = _confirmPasswordController.text.trim();
+                      final confirmPassword =
+                          _confirmPasswordController.text.trim();
 
                       if (newPassword.isEmpty || confirmPassword.isEmpty) {
                         setModalState(() {
@@ -278,7 +297,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
 
                       try {
                         // Call the AuthProvider to update the password.
-                        bool result = await Provider.of<LucernaAuthProvider.AuthProvider>(
+                        bool result =
+                            await Provider.of<LucernaAuthProvider.AuthProvider>(
                           context,
                           listen: false,
                         ).updatePassword(newPassword);
@@ -288,7 +308,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Password Updated Successfully"),
-                              backgroundColor: Colors.green,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
                             ),
                           );
                         } else {
@@ -303,7 +324,7 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       minimumSize: Size(double.infinity, 50),
                     ),
                     child: Text("Save Password"),
@@ -317,29 +338,16 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Your Profile',
-          style: Theme.of(context)
-              .textTheme
-              .headlineLarge!
-              .copyWith(color: Colors.white),
-        ),
-        backgroundColor: Colors.green,//Theme.of(context).colorScheme.primary,
-        centerTitle: true,
-        toolbarHeight: kToolbarHeight + 20,
-      ),
+      appBar: CommonAppBar(title: "My Profile"),
       body: Column(
         children: [
           TabBar(
             controller: _tabController,
-            indicatorColor: Colors.green,
-            labelColor: Colors.green,
+            indicatorColor: Theme.of(context).colorScheme.secondary,
+            labelColor: Theme.of(context).colorScheme.secondary,
             unselectedLabelColor: Colors.grey,
             tabs: const [
               Tab(icon: Icon(Icons.person), text: "Profile"),
@@ -357,10 +365,10 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
+      bottomNavigationBar:
+          CommonBottomNavigationBar(selectedTab: BottomTab.profile),
     );
   }
-
 
   Widget _buildProfileTab() {
     return SingleChildScrollView(
@@ -448,7 +456,7 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                   label: const Text("Edit Profile"),
                   onPressed: _showEditProfileDialog,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                 ),
@@ -495,7 +503,9 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
               minimumSize: const Size(double.infinity, 50),
             ),
             onPressed: () async {
-              await Provider.of<LucernaAuthProvider.AuthProvider>(context, listen: false).logout();
+              await Provider.of<LucernaAuthProvider.AuthProvider>(context,
+                      listen: false)
+                  .logout();
               Navigator.popUntil(context, (route) => route.isFirst);
             },
           ),
@@ -524,7 +534,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                 icon: Icon(
                   _isApiKeyVisible ? Icons.visibility_off : Icons.visibility,
                 ),
-                onPressed: () => setState(() => _isApiKeyVisible = !_isApiKeyVisible),
+                onPressed: () =>
+                    setState(() => _isApiKeyVisible = !_isApiKeyVisible),
               ),
             ),
           ),
@@ -543,7 +554,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                 icon: Icon(
                   _isApiKeyVisible ? Icons.visibility_off : Icons.visibility,
                 ),
-                onPressed: () => setState(() => _isApiKeyVisible = !_isApiKeyVisible),
+                onPressed: () =>
+                    setState(() => _isApiKeyVisible = !_isApiKeyVisible),
               ),
             ),
           ),
@@ -552,7 +564,8 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
             onPressed: () async {
               if (_isEditingApiKeys) {
                 final geminiApiKey = _geminiApiKeyController.text.trim();
-                final carbonSutraApiKey = _carbonSutraApiKeyController.text.trim();
+                final carbonSutraApiKey =
+                    _carbonSutraApiKeyController.text.trim();
 
                 try {
                   // Call AuthProvider to update API keys
@@ -564,7 +577,7 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: const Text("API Keys Updated Successfully"),
-                      backgroundColor: Colors.green,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                     ),
                   );
                 } catch (e) {
@@ -584,58 +597,10 @@ class _UserProfileState extends State<UserProfile> with SingleTickerProviderStat
             style: ElevatedButton.styleFrom(
               backgroundColor: _isEditingApiKeys
                   ? Theme.of(context).colorScheme.tertiary
-                  : Colors.green,
+                  : Theme.of(context).colorScheme.secondary,
               minimumSize: const Size(double.infinity, 50),
             ),
             child: Text(_isEditingApiKeys ? "Save Keys" : "Edit Keys"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return BottomAppBar(
-      color: Color.fromRGBO(173, 191, 127, 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: const Icon(Icons.pie_chart, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => dashboard()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(Icons.lightbulb, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ecolight_stat()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(Icons.edit, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => CarbonFootprintTracker()));
-              }),
-          IconButton(
-              icon: Image.asset('assets/chat-w.png'),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => chat(
-                          carbonFootprint: '10', showAddRecordButton: false)),
-                );
-              }),
-          IconButton(
-            icon: const Icon(Icons.person, color: Colors.black),
-            onPressed: () {}, // Disabled to prevent redundant navigation
           ),
         ],
       ),

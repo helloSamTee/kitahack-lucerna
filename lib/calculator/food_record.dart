@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:Lucerna/calculator/common_widget.dart';
+import 'package:Lucerna/common_widget.dart';
 import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -78,8 +80,10 @@ class _FoodRecordState extends State<foodRecord> {
     return MaterialApp(
       theme: appTheme,
       home: Scaffold(
-        backgroundColor: const Color.fromRGBO(173, 191, 127, 1),
-        bottomNavigationBar: _buildBottomNavigationBar(context),
+        backgroundColor: const Color.fromRGBO(200, 200, 200, 1),
+        appBar: CommonAppBar(title: "Track Carbon Footprint"),
+        bottomNavigationBar:
+            CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
@@ -98,13 +102,15 @@ class _FoodRecordState extends State<foodRecord> {
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headlineLarge!
-                                  .copyWith(color: Colors.white),
+                                  .headlineMedium!
+                                  .copyWith(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
                             ),
                             const SizedBox(height: 50),
-                            _buildTextField(_titleController, 'Title'),
+                            buildTextField(context, _titleController, 'Title'),
                             const SizedBox(height: 25),
                             _buildAttachmentSection(),
+                            const SizedBox(height: 25),
                           ],
                         ),
                       ),
@@ -116,38 +122,6 @@ class _FoodRecordState extends State<foodRecord> {
         ),
       ),
     );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String label,
-      {bool alphanumeric = false}) {
-    return TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: Theme.of(context).textTheme.labelSmall,
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.5))),
-        ),
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        // Validator to check for empty fields
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return '$label cannot be empty. Please enter a valid value.';
-          }
-          if (alphanumeric) {
-            // Check if the input is numeric
-            final num? numericValue = num.tryParse(value);
-            if (numericValue != null) {
-              if (numericValue <= 0) {
-                return '$label must be a positive value. Please enter either a text description or a valid numerical value.';
-              }
-            }
-          }
-          return null;
-        });
   }
 
   Widget _buildAttachmentSection() {
@@ -278,64 +252,4 @@ class _FoodRecordState extends State<foodRecord> {
       );
     }
   }
-}
-
-Widget _buildBottomNavigationBar(BuildContext context) {
-  return BottomAppBar(
-    color: Color.fromRGBO(173, 191, 127, 1),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-            icon: const Icon(
-              Icons.pie_chart,
-              color: Colors.white,
-            ),
-            onPressed: () {}),
-        IconButton(
-            icon: const Icon(
-              Icons.lightbulb,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ecolight_stat()),
-              );
-            }),
-        IconButton(
-            icon: const Icon(
-              Icons.edit,
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CarbonFootprintTracker()));
-            }),
-        IconButton(
-            icon: Image.asset('assets/chat-w.png'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => chat(
-                        carbonFootprint: '10', showAddRecordButton: false)),
-              );
-            }),
-        IconButton(
-          icon: const Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserProfile()),
-            );
-          },
-        ),
-      ],
-    ),
-  );
 }

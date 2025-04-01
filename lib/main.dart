@@ -1,11 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Lucerna/home/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
-import 'package:Lucerna/calculator/journey_record.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/login/login_page.dart';
 //import 'package:Lucerna/login_page.dart';
 import 'firebase_options.dart';
@@ -23,7 +18,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LucernaAuthProvider.AuthProvider()),
+        ChangeNotifierProvider(
+            create: (context) => LucernaAuthProvider.AuthProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
       ],
       child: MyApp(),
@@ -50,7 +46,6 @@ void main() async {
 //   );
 // }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -59,7 +54,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Lucerna',
       theme: appTheme,
-      home: LoginPage(),
+      home: dashboard(),
     );
   }
 }

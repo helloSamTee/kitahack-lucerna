@@ -41,13 +41,16 @@ class _LoginPageState extends State<LoginPage> {
         final password = _passwordController.text.trim();
 
         // Use AuthProvider for authentication
-        await Provider.of<lucerna_auth.AuthProvider>(context, listen: false).login(email, password);
+        await Provider.of<lucerna_auth.AuthProvider>(context, listen: false)
+            .login(email, password);
 
         // Check if user is authenticated
-        final user = Provider.of<lucerna_auth.AuthProvider>(context, listen: false).user;
+        final user =
+            Provider.of<lucerna_auth.AuthProvider>(context, listen: false).user;
         if (user != null) {
           // Load history from Firestore
-          final historyProvider = Provider.of<HistoryProvider>(context, listen: false);
+          final historyProvider =
+              Provider.of<HistoryProvider>(context, listen: false);
           await historyProvider.loadHistoryFromFirestore(user.uid);
 
           // Navigate to dashboard on successful login
@@ -62,7 +65,8 @@ class _LoginPageState extends State<LoginPage> {
         }
       } catch (e) {
         setState(() {
-          _errorMessage = "Wrong Email or Password"; // Set general error message
+          _errorMessage =
+              "Wrong Email or Password"; // Set general error message
         });
       }
     }
@@ -70,13 +74,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _controller = VideoPlayerController.asset("videos/login.mp4");
-    _initializeVideoPlayerFuture =
-        _controller.initialize().then((value) => _controller.play());
-    _controller.setLooping(true);
-    _controller.setVolume(0.0);
-    _controller.setPlaybackSpeed(0.5);
-    super.initState();
+    // _controller = VideoPlayerController.asset("videos/login.mp4");
+    // _initializeVideoPlayerFuture =
+    //     _controller.initialize().then((value) => _controller.play());
+    // _controller.setLooping(true);
+    // _controller.setVolume(0.0);
+    // _controller.setPlaybackSpeed(0.5);
+    // super.initState();
+
     // controller = WebViewController()
     //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
     //   ..setNavigationDelegate(
@@ -117,32 +122,62 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment
                     .center, // Centers all components vertically
                 children: [
-                  // Video
-                  FutureBuilder(
-                    future: _initializeVideoPlayerFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return SizedBox(
-                          width:
-                              double.infinity, // Stretch to full screen width
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          ),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
+                  const SizedBox(height: 50),
+                  Image.asset(
+                    'assets/login.jpg',
+                    width: MediaQuery.of(context).size.width,
+                    // height: MediaQuery.of(context).size.height * 0.3,
                   ),
+
+                  // Video
+                  // FutureBuilder(
+                  //   future: _initializeVideoPlayerFuture,
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.done) {
+                  //       return SizedBox(
+                  //         width:
+                  //             double.infinity, // Stretch to full screen width
+                  //         child: AspectRatio(
+                  //           aspectRatio: _controller.value.aspectRatio,
+                  //           child: VideoPlayer(_controller),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       return Center(child: CircularProgressIndicator());
+                  //     }
+                  //   },
+                  // ),
+
                   // Input Form
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 80, vertical: 75),
+                    padding: const EdgeInsets.fromLTRB(80, 30, 80, 50),
+                    // .symmetric(
+                    //     horizontal: 80, vertical: 75),
                     child: Column(
                       mainAxisSize: MainAxisSize.min, // Keeps it compact
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Text(
+                          'Lucerna',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge!
+                              .copyWith(
+                                  color: Theme.of(context).colorScheme.primary),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Eco-Friendly Living Starts Here.',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
+                        ),
+                        const SizedBox(height: 50),
                         _buildTextField(_emailController, 'Email'),
                         const SizedBox(height: 20),
                         _buildTextField(_passwordController, 'Password',
@@ -222,7 +257,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Text(
           'Login',
-          style: Theme.of(context).textTheme.displayLarge,
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(color: Colors.white),
         ),
       ),
     );
@@ -244,7 +282,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Text(
           'Register',
-          style: Theme.of(context).textTheme.displayLarge,
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(color: Colors.white),
         ),
       ),
     );

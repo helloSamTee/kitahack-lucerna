@@ -1,12 +1,8 @@
-import 'package:Lucerna/profile/user_profile.dart';
+import 'package:Lucerna/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/calculator/cf_summary.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
 import 'common_widget.dart';
 import 'carbon_sutra.dart';
 
@@ -87,7 +83,7 @@ class _EnergyRecordState extends State<energyRecord> {
   ];
 
   String selectedCountry = "Malaysia";
-  
+
   // check carbon sutra api from user
   late CarbonSutraAPI api;
 
@@ -132,8 +128,10 @@ class _EnergyRecordState extends State<energyRecord> {
     return MaterialApp(
       theme: appTheme,
       home: Scaffold(
-        backgroundColor: const Color.fromRGBO(173, 191, 127, 1),
-        bottomNavigationBar: _buildBottomNavigationBar(context),
+        backgroundColor: const Color.fromRGBO(200, 200, 200, 0.5),
+        appBar: CommonAppBar(title: "Track Carbon Footprint"),
+        bottomNavigationBar:
+            CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
@@ -152,8 +150,9 @@ class _EnergyRecordState extends State<energyRecord> {
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headlineLarge!
-                                  .copyWith(color: Colors.white),
+                                  .headlineMedium!
+                                  .copyWith(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
                             ),
                             const SizedBox(height: 50),
                             buildTextField(context, _titleController, 'Title'),
@@ -243,71 +242,6 @@ class _EnergyRecordState extends State<energyRecord> {
                 ),
               )),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return BottomAppBar(
-      color: Color.fromRGBO(173, 191, 127, 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: const Icon(
-                Icons.pie_chart,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dashboard()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(
-                Icons.lightbulb,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ecolight_stat()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(
-                Icons.edit,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CarbonFootprintTracker()));
-              }),
-          IconButton(
-              icon: Image.asset('assets/chat-w.png'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => chat(
-                          carbonFootprint: '10', showAddRecordButton: false)),
-                );
-              }),
-          IconButton(
-            icon: const Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UserProfile()),
-              );
-            },
-          ),
-        ],
       ),
     );
   }
