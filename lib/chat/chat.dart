@@ -101,11 +101,6 @@ class _ChatState extends State<chat> {
 
     final setLLMKeyFlag = await _setLLMKey(apiKeyToUse);
 
-    if (setLLMKeyFlag == 1) {
-      print("Invalid API KEY");
-      return 'Sorry, there was an error getting a response.';
-    }
-
     String chatHistory = messages.map((msg) {
       return '${msg['type'] == 'user' ? 'User' : 'Bot'}: ${msg['text']}';
     }).join('\n');
@@ -129,7 +124,10 @@ class _ChatState extends State<chat> {
         Here is the chat history:
         $chatHistory
         User said: "$userMessage". 
-        Guide the user on how their historical footprint reflects on their lifestyle, and offer suggestions on how they can improve.
+        Please answer the user's question. 
+        If the question has any relation to the user's cumulative carbon footprint, 
+        then guide the user on how their 
+        historical footprint reflects on their lifestyle, and offer suggestions on how they can improve.
         Respond in a concise manner, limiting your response to 60 words.
       ''';
     }
@@ -169,7 +167,7 @@ Future<int> _setLLMKey(String apiKey) async {
 
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
-      return responseData['Info'] ? 0 : 1;
+      return responseData['Info'] == 'API KEY INVALID' ? 1 : 0;
     } else {
       print('API Error: ${response.statusCode} - ${response.body}');
       return 1;
