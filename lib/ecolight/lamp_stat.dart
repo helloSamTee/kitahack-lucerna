@@ -1,11 +1,6 @@
 import 'package:Lucerna/common_widget.dart';
-import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/main.dart';
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math'; // As of now, there is only 1 ecolight hardware, and flask is not connected, so we import to generate random values

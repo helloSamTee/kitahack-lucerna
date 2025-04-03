@@ -103,10 +103,10 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
       centerTitle: true,
-      toolbarHeight: kToolbarHeight + 20,
+      toolbarHeight: kToolbarHeight + 10,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + 20);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight + 10);
 }

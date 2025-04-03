@@ -1,15 +1,8 @@
 import 'package:Lucerna/common_widget.dart';
-import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/calculator/cf_summary.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
-import '../API_KEY_Config.dart';
 import 'common_widget.dart';
 import 'carbon_sutra.dart';
 

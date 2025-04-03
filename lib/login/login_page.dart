@@ -2,7 +2,6 @@ import 'package:Lucerna/auth_provider.dart' as lucerna_auth;
 import 'package:Lucerna/calculator/history_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/home/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';

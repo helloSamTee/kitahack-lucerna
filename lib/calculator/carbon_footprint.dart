@@ -1,15 +1,9 @@
 import 'package:Lucerna/common_widget.dart';
-import 'package:Lucerna/profile/user_profile.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/energy_record.dart';
 import 'package:Lucerna/calculator/food_record.dart';
 import 'package:Lucerna/calculator/journey_record.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
-import 'package:Lucerna/main.dart';
 import 'package:provider/provider.dart';
 import 'history_provider.dart'; // Import the provider
 import 'package:Lucerna/auth_provider.dart'; // Import firebase provider
@@ -104,7 +98,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
           ],
         ),
       ),
-      appBar: CommonAppBar(title: "Track Carbon Footprint"),
+      appBar: CommonAppBar(title: "Carbon Footprint"),
       bottomNavigationBar:
           CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
     );

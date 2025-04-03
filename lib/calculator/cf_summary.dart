@@ -1,15 +1,11 @@
 import 'package:Lucerna/auth_provider.dart';
 import 'package:Lucerna/class_models/carbon_record.dart';
 import 'package:Lucerna/common_widget.dart';
-import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
 import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/history_provider.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
-import 'package:Lucerna/main.dart';
 import 'package:Lucerna/firestore_service.dart';
 
 class CFSummaryPage extends StatelessWidget {

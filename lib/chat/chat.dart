@@ -1,12 +1,9 @@
 import 'package:Lucerna/common_widget.dart';
-import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/history_provider.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
 import 'package:Lucerna/auth_provider.dart';
 import '../API_KEY_Config.dart';

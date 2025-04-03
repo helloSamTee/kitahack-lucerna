@@ -1,18 +1,13 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:Lucerna/calculator/common_widget.dart';
 import 'package:Lucerna/common_widget.dart';
-import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'cf_summary.dart';
-import '../ecolight/lamp_stat.dart';
 import '../main.dart';
-import 'carbon_footprint.dart';
 import 'package:image_picker/image_picker.dart'; // For picking images/documents
 import 'package:google_generative_ai/google_generative_ai.dart';
 import '../API_KEY_Config.dart';
-import '../chat/chat.dart';
 
 class foodRecord extends StatefulWidget {
   @override
