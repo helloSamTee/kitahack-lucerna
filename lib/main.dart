@@ -1,11 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
-import 'package:Lucerna/calculator/journey_record.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/login/login_page.dart';
 //import 'package:Lucerna/login_page.dart';
 import 'firebase_options.dart';
@@ -23,7 +17,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LucernaAuthProvider.AuthProvider()),
+        ChangeNotifierProvider(
+            create: (context) => LucernaAuthProvider.AuthProvider()),
         ChangeNotifierProvider(create: (context) => HistoryProvider()),
       ],
       child: MyApp(),
@@ -49,7 +44,6 @@ void main() async {
 //     ),
 //   );
 // }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -125,14 +119,14 @@ ThemeData appTheme = ThemeData(
   textTheme: TextTheme(
     // text styling for page title
     headlineLarge: GoogleFonts.ptSansCaption(
-      fontSize: 35,
+      fontSize: 25,
       fontWeight: FontWeight.bold,
       //height: 35,
       letterSpacing: 3.5,
     ),
 
     headlineMedium: GoogleFonts.ptSansCaption(
-      fontSize: 25,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
       //height: 35,
       letterSpacing: 3.5,
@@ -140,32 +134,32 @@ ThemeData appTheme = ThemeData(
 
     // text styling for button
     displayLarge: GoogleFonts.ptSansCaption(
-      fontSize: 17.5,
+      fontSize: 15,
       fontWeight: FontWeight.bold,
     ),
 
     // text styling for text title
     titleLarge: GoogleFonts.ptSerif(
-      fontSize: 20,
+      fontSize: 15,
       fontWeight: FontWeight.bold,
     ),
 
     titleSmall: GoogleFonts.ptSerif(
-      fontSize: 15,
+      fontSize: 10,
       fontWeight: FontWeight.bold,
     ),
 
     bodyLarge: GoogleFonts.ptSans(
-      fontSize: 15,
+      fontSize: 10,
     ),
 
     bodyMedium: GoogleFonts.ptSansNarrow(
-      fontSize: 15,
+      fontSize: 12.5,
       fontWeight: FontWeight.bold,
     ),
 
     bodySmall: GoogleFonts.ptSans(
-      fontSize: 12.5,
+      fontSize: 10,
     ),
 
     // TextField in Carbon Footprint Form

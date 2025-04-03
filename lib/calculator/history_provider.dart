@@ -3,6 +3,7 @@ import 'dart:convert'; // To convert data to/from JSON
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:Lucerna/firestore_service.dart';
+import 'package:intl/intl.dart'; // Import for date formatting
 import 'package:Lucerna/class_models/carbon_record.dart';
 
 class HistoryProvider with ChangeNotifier {
@@ -16,13 +17,17 @@ class HistoryProvider with ChangeNotifier {
 
   // Method to add a new record and notify listeners.
   Future<void> addRecord(
-      String title,
-      String category,
-      String carbonFootprint,
-      String suggestion,
-      String? vehicleType,
-      String? distance,
-      String? energyUsed) async {
+    String title,
+    String category,
+    String carbonFootprint,
+    String suggestion,
+    String? vehicleType,
+    String? distance,
+    String? energyUsed,
+  ) async {
+    String formattedDate =
+        _formatDateTime(DateTime.now()); // Generate timestamp
+
     _history.add({
       'title': title,
       'category': category,
@@ -30,10 +35,12 @@ class HistoryProvider with ChangeNotifier {
       'suggestion': suggestion,
       'vehicleType': vehicleType,
       'distance': distance,
-      'energyUsed': energyUsed
+      'energyUsed': energyUsed,
+      'dateTime': formattedDate,
     });
-    notifyListeners(); // Notifies all listeners (UI will rebuild).
-    await _saveHistoryToPrefs(); // Save to local storage
+
+    notifyListeners();
+    await _saveHistoryToPrefs();
   }
 
   // New method to add record to Firestore
@@ -78,21 +85,29 @@ class HistoryProvider with ChangeNotifier {
           .orderBy('dateTime', descending: true)
           .get();
 
-      _history = snapshot.docs.map((doc) {
-        return {
-          'title': doc['title'] as String?,
-          'category': doc['type'] as String?,
-          'carbonFootprint': doc['value'].toString(),
-          'suggestion': doc['suggestion'] as String?,
-          'vehicleType': doc['vehicleType'] as String?,
-          'distance': doc['distance'].toString(),
-          'energyUsed': doc['energyUsed'].toString(),
-        };
-      }).toList().cast<Map<String, String?>>();
+      _history = snapshot.docs
+          .map((doc) {
+            return {
+              'title': doc['title'] as String?,
+              'category': doc['type'] as String?,
+              'carbonFootprint': doc['value'].toString(),
+              'suggestion': doc['suggestion'] as String?,
+              'vehicleType': doc['vehicleType'] as String?,
+              'distance': doc['distance'].toString(),
+              'energyUsed': doc['energyUsed'].toString(),
+              'dateTime': _formatDateTime(doc['dateTime'].toDate()),
+            };
+          })
+          .toList()
+          .cast<Map<String, String?>>();
 
       notifyListeners();
     } catch (e) {
       print('Error loading history from Firestore: $e');
     }
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    return DateFormat("MMMM d, yyyy 'at' hh:mm:ss a 'UTC'XXX").format(dateTime);
   }
 }
