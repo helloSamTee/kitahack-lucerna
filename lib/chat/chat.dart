@@ -137,7 +137,7 @@ class _ChatState extends State<chat> {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://rag-api-463242189056.us-central1.run.app/query?query=${Uri.encodeComponent(prompt)}'),
+            'https://rag-api-193945562879.us-central1.run.app/query?query=${Uri.encodeComponent(prompt)}'),
       );
 
       if (response.statusCode == 200) {
@@ -159,7 +159,7 @@ class _ChatState extends State<chat> {
   // New function to set LLM API Key
   Future<int> _setLLMKey(String apiKey) async {
     final apiUrl =
-        'https://rag-api-463242189056.us-central1.run.app/secure-endpoint/api_key'; // Replace with your API endpoint
+        'https://rag-api-193945562879.us-central1.run.app/secure-endpoint/api_key'; // Replace with your API endpoint
 
     try {
       final response = await http.post(

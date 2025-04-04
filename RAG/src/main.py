@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Header
-from rag_header import RAG
+from src.rag_header import RAG
 import json
 
 class RAG_API():

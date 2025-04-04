@@ -4,18 +4,16 @@ from llama_index.core.retrievers import BaseRetriever
 from llama_index.core.schema import QueryBundle, TextNode
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.llms.google_genai import GoogleGenAI
-from llama_index.embeddings.cohere import CohereEmbedding
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.storage.docstore import SimpleDocumentStore
 import hashlib
 import chromadb
 import os
 from dotenv import load_dotenv
-
+from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 # Load environment variables
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 
 # NodeParser - Chunking + Add MetaData
 class CarbonEmissionsNodeParser():
@@ -141,7 +139,7 @@ class RAG():
     def __init__(self, hostname: str="34.44.31.105", # Vector Store Google Compute Engine Engine External IP
                  port: int=8000,
                  llm = GoogleGenAI(model="models/gemini-1.5-flash-002", api_key=GEMINI_API_KEY), 
-                 embed_model=CohereEmbedding(model_name="embed-english-v3.0", api_key=COHERE_API_KEY),
+                 embed_model=GoogleGenAIEmbedding(model_name="text-embedding-004", api_key=GEMINI_API_KEY),
                  docstore=SimpleDocumentStore.from_persist_path(persist_path="./storageContext/docstore.json")):
         
         self.llm_model = llm.model
@@ -218,6 +216,7 @@ class RAG():
             # Local Backup
             chroma_client = chromadb.PersistentClient("./vectorstore")
             print("Chroma DB Server is Down, Running Local Backup")
+
 
         chroma_collection = chroma_client.get_or_create_collection(name="data")
 
