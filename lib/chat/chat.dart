@@ -1,6 +1,5 @@
 import 'package:Lucerna/common_widget.dart';
 import 'dart:convert';
-import 'package:Lucerna/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
@@ -194,14 +193,6 @@ class _ChatState extends State<chat> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
-                // Text(
-                //   'Chat with AI',
-                //   textAlign: TextAlign.center,
-                //   style: Theme.of(context)
-                //       .textTheme
-                //       .headlineMedium!
-                //       .copyWith(color: Theme.of(context).colorScheme.primary),
-                // ),
                 const SizedBox(height: 30),
                 Expanded(
                   child: Container(

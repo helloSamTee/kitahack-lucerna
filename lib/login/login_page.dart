@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   // Input Form
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(80, 30, 80, 50),
+                    padding: const EdgeInsets.fromLTRB(50, 30, 50, 50),
                     // .symmetric(
                     //     horizontal: 80, vertical: 75),
                     child: Column(

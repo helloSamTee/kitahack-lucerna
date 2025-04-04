@@ -102,9 +102,10 @@ class _dashboardState extends State<dashboard> {
           bottomNavigationBar:
               CommonBottomNavigationBar(selectedTab: BottomTab.dashboard),
           body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-              child: SingleChildScrollView(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,8 +133,8 @@ class _dashboardState extends State<dashboard> {
                     Center(
                         child: Text(
                       'Way to go! With Lucerna, you have tracked ${totalCarbonFootprint.toStringAsFixed(2)} kg of carbon footprint and offset ${totalCarbonOffset.toStringAsFixed(2)} kg. \nSmall steps, big impact!  🌍🌱',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Color.fromRGBO(100, 100, 100, 1),
                           ),
                       textAlign: TextAlign.center,
                     )),
@@ -141,7 +142,7 @@ class _dashboardState extends State<dashboard> {
                     Center(
                       child: Text(
                         'Latest Carbon Activity',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
                       ),
