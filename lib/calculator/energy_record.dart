@@ -85,14 +85,14 @@ class _EnergyRecordState extends State<energyRecord> {
   String selectedCountry = "Malaysia";
 
   // check carbon sutra api from user
-  late CarbonSutraAPI api;
+  late GeminiAPIFootprint api;
 
   @override
   void initState() {
     super.initState();
 
     // Initialize the CarbonSutraAPI with the context
-    api = CarbonSutraAPI(context);
+    api = GeminiAPIFootprint(context);
   }
   // JL
 
@@ -108,20 +108,6 @@ class _EnergyRecordState extends State<energyRecord> {
   //     return "0";
   //   }
   // }
-
-  Future<String> calculateCarbonFootprintFromEnergy(
-      String country, String energyUsed) async {
-    final response = await api.calcElectricity(
-      electricityValue: energyUsed,
-      countryName: country,
-    );
-
-    if (response != null) {
-      return response['data']['co2e_kg'].toString();
-    } else {
-      return "0";
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,9 +193,9 @@ class _EnergyRecordState extends State<energyRecord> {
                 Gemini API call here!!
                 Pass the carbon footprint and suggestion to CFSummaryPage constructor
                 */
-                  String carbonFootprint =
-                      await calculateCarbonFootprintFromEnergy(
-                          selectedCountry, energyUsed);
+                  String carbonFootprint = await api.calcElectricity(
+                      electricityValue: energyUsed,
+                      countryName: selectedCountry);
 
                   // Navigate to the new page with the inputs
                   Navigator.push(

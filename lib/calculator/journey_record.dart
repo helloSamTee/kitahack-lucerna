@@ -83,47 +83,14 @@ class _JourneyRecordState extends State<journeyRecord> {
   // final CarbonSutraAPI api = CarbonSutraAPI();
 
   // check carbon sutra api from user
-  late CarbonSutraAPI api;
+  late GeminiAPIFootprint api;
 
   @override
   void initState() {
     super.initState();
 
     // Initialize the CarbonSutraAPI with the context
-    api = CarbonSutraAPI(context);
-  }
-  // JL
-
-  Future<String> calculateCarbonFootprintFromFlight(
-      String flightFrom,
-      String flightTo,
-      String flightClass,
-      String roundTrip,
-      String numPassenger) async {
-    final response = await api.calcFlight(
-        flightFrom: flightFrom,
-        flightTo: flightTo,
-        flightClass: selectedFlightClass,
-        roundTrip: roundTrip,
-        numPassenger: numPassenger);
-
-    if (response != null) {
-      return response['data']['co2e_kg'].toString();
-    } else {
-      return "0";
-    }
-  }
-
-  Future<String> calculateCarbonFootprintFromVehicle(
-      String vehicleType, String distanceKM, String fuelType) async {
-    final response = await api.calcVehicleByType(
-        vehicleType: vehicleType, distanceKM: distanceKM, fuelType: fuelType);
-
-    if (response != null) {
-      return response['data']['co2e_kg'].toString();
-    } else {
-      return "0";
-    }
+    api = GeminiAPIFootprint(context);
   }
 
   @override
@@ -322,12 +289,12 @@ class _JourneyRecordState extends State<journeyRecord> {
                   String carbonFootprint;
                   String finalVehicle;
                   if (selectedVehicle == 'Flight') {
-                    carbonFootprint = await calculateCarbonFootprintFromFlight(
-                        airportFromController.text,
-                        airportToController.text,
-                        selectedFlightClass,
-                        roundTripValue,
-                        numPassengersController.text);
+                    carbonFootprint = await api.calcFlight(
+                        flightFrom: airportFromController.text,
+                        flightTo: airportToController.text,
+                        flightClass: selectedFlightClass,
+                        roundTrip: roundTripValue,
+                        numPassenger: numPassengersController.text);
                     finalVehicle = "Flight ($selectedFlightClass)";
                   } else {
                     switch (selectedVehicle) {
@@ -347,10 +314,10 @@ class _JourneyRecordState extends State<journeyRecord> {
                         finalVehicle = selectedVehicle;
                         break;
                     }
-                    carbonFootprint = await calculateCarbonFootprintFromVehicle(
-                        finalVehicle,
-                        distanceValueController.text,
-                        selectedFuel);
+                    carbonFootprint = await api.calcVehicleByType(
+                        vehicleType: finalVehicle,
+                        distanceKM: distanceValueController.text,
+                        fuelType: selectedFuel);
                   }
 
                   // Navigate to the new page with the inputs
