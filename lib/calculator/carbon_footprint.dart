@@ -56,16 +56,6 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Padding(
-            //     padding: EdgeInsets.fromLTRB(30, 50, 30, 30),
-            //     child: Text(
-            //       'Track\nCarbon Footprint',
-            //       textAlign: TextAlign.center,
-            //       style: Theme.of(context)
-            //           .textTheme
-            //           .headlineLarge!
-            //           .copyWith(color: Colors.white),
-            //     )),
             const SizedBox(height: 30),
             Text(
               'Add a record of the below categories:',

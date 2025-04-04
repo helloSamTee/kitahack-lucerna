@@ -38,14 +38,17 @@ class CarbonVisualizationScreen extends StatelessWidget {
         controller: pageController,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: _buildVisualizationCard(donut),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: _buildVisualizationCard(line),
           ),
-          _buildVisualizationCard(stacked),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: _buildVisualizationCard(stacked),
+          ),
         ],
       ),
     );

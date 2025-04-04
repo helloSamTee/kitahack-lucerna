@@ -22,8 +22,10 @@ class DailyDonutChart extends StatelessWidget {
         ),
         const SizedBox(height: 25),
         Expanded(
+            child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: _drawPieChart(todayFootprint, context),
-        ),
+        )),
         const SizedBox(height: 25),
         Text(
           "Today's Carbon Footprint: ${todayFootprint.toStringAsFixed(2)} kg",
@@ -47,11 +49,12 @@ class DailyDonutChart extends StatelessWidget {
   Widget _drawPieChart(double todayFootprint, BuildContext context) {
     if (todayFootprint == 0) {
       return Text(
-        "No record yet. Track your carbon activity now!",
+        "No record yet. \nTrack your carbon activity now!",
         style: Theme.of(context)
             .textTheme
             .headlineLarge!
             .copyWith(color: Colors.white),
+        textAlign: TextAlign.center,
       );
     } else {
       return PieChart(PieChartData(

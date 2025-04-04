@@ -150,11 +150,12 @@ ThemeData appTheme = ThemeData(
     ),
 
     bodyLarge: GoogleFonts.ptSans(
-      fontSize: 10,
+      fontSize: 15,
+      fontWeight: FontWeight.bold,
     ),
 
     bodyMedium: GoogleFonts.ptSansNarrow(
-      fontSize: 12.5,
+      fontSize: 10,
       fontWeight: FontWeight.bold,
     ),
 
