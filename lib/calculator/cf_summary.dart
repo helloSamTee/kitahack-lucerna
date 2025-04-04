@@ -38,10 +38,10 @@ class CFSummaryPage extends StatelessWidget {
         // theme: appTheme,
         // home:
         Scaffold(
-      backgroundColor: Color(0xFFB7C49D), // Light green background color
+      backgroundColor: Color.fromRGBO(200, 200, 200, 1),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -55,8 +55,8 @@ class CFSummaryPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .headlineLarge!
-                            .copyWith(color: Colors.white),
+                            .headlineMedium!
+                            .copyWith(color: Color.fromRGBO(0, 0, 0, 0.5)),
                       ),
                       const SizedBox(height: 30),
                       Center(
@@ -64,7 +64,7 @@ class CFSummaryPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: EdgeInsets.all(20.0),
+                              // padding: EdgeInsets.all(10.0),
                               margin: EdgeInsets.symmetric(horizontal: 30),
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -136,8 +136,6 @@ class CFSummaryPage extends StatelessWidget {
                                         .bodyLarge!
                                         .copyWith(color: Colors.black),
                                   ),
-                                  // New button to redirect to chat
-                                  // New button to redirect to chat
                                   ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -174,7 +172,7 @@ class CFSummaryPage extends StatelessWidget {
                                           .textTheme
                                           .headlineMedium!
                                           .copyWith(
-                                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                                            color: Colors.white,
                                             fontSize: 20, // Larger font size
                                             fontWeight: FontWeight.bold,
                                           ),

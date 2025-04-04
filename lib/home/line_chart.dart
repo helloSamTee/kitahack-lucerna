@@ -44,9 +44,11 @@ class WeeklyLineChart extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Expanded(
+            child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: _buildLineChart(
               days, footprintValues, offsetValues, totalFootprint, context),
-        ),
+        )),
         const SizedBox(height: 25),
         Text(
           "Weekly Carbon Footprint: ${totalFootprint.toStringAsFixed(2)} kg",
@@ -81,61 +83,59 @@ class WeeklyLineChart extends StatelessWidget {
       List<double> offset, double totalFootprint, BuildContext context) {
     if (totalFootprint == 0) {
       return Text(
-        "No record yet. Track your carbon activity now!",
+        "No record yet. \nTrack your carbon activity now!",
         style: Theme.of(context)
             .textTheme
             .headlineLarge!
             .copyWith(color: Colors.white),
+        textAlign: TextAlign.center,
       );
     } else {
-      return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: LineChart(
-          LineChartData(
-            gridData: FlGridData(show: true, drawVerticalLine: false),
-            titlesData: FlTitlesData(
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  interval: 1,
-                  getTitlesWidget: (value, meta) {
-                    int index = value.toInt();
-                    if (index >= 0 && index < days.length) {
-                      return Text(days[index],
-                          style: const TextStyle(fontSize: 12));
-                    }
-                    return const Text('');
-                  },
-                ),
-              ),
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  getTitlesWidget: (value, meta) {
-                    return Text(
-                      _formatYAxis(value),
-                      style: const TextStyle(fontSize: 12),
-                    );
-                  },
-                ),
-              ),
-              topTitles: AxisTitles(
-                // Disable top titles to remove numbers on top
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              rightTitles: AxisTitles(
-                // Optionally hide right-side titles if needed
-                sideTitles: SideTitles(showTitles: false),
+      return LineChart(
+        LineChartData(
+          gridData: FlGridData(show: true, drawVerticalLine: false),
+          titlesData: FlTitlesData(
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                interval: 1,
+                getTitlesWidget: (value, meta) {
+                  int index = value.toInt();
+                  if (index >= 0 && index < days.length) {
+                    return Text(days[index],
+                        style: const TextStyle(fontSize: 12));
+                  }
+                  return const Text('');
+                },
               ),
             ),
-            borderData: FlBorderData(show: true),
-            lineBarsData: [
-              _buildLineChartBar(footprint,
-                  Theme.of(context).colorScheme.tertiary, "Footprint"),
-              _buildLineChartBar(
-                  offset, Theme.of(context).colorScheme.secondary, "Offset"),
-            ],
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    _formatYAxis(value),
+                    style: const TextStyle(fontSize: 12),
+                  );
+                },
+              ),
+            ),
+            topTitles: AxisTitles(
+              // Disable top titles to remove numbers on top
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: AxisTitles(
+              // Optionally hide right-side titles if needed
+              sideTitles: SideTitles(showTitles: false),
+            ),
           ),
+          borderData: FlBorderData(show: true),
+          lineBarsData: [
+            _buildLineChartBar(
+                footprint, Theme.of(context).colorScheme.tertiary, "Footprint"),
+            _buildLineChartBar(
+                offset, Theme.of(context).colorScheme.secondary, "Offset"),
+          ],
         ),
       );
     }

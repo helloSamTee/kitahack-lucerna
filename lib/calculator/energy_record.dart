@@ -128,7 +128,7 @@ class _EnergyRecordState extends State<energyRecord> {
     return MaterialApp(
       theme: appTheme,
       home: Scaffold(
-        backgroundColor: const Color.fromRGBO(200, 200, 200, 0.5),
+        backgroundColor: const Color.fromRGBO(200, 200, 200, 1),
         appBar: CommonAppBar(title: "Track Carbon Footprint"),
         bottomNavigationBar:
             CommonBottomNavigationBar(selectedTab: BottomTab.tracker),

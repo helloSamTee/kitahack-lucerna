@@ -129,13 +129,14 @@ class _dashboardState extends State<dashboard> {
                         weeklyFootprint: weeklyFootprint,
                         weeklyOffset: weeklyOffset),
                     const SizedBox(height: 25),
-                    Text(
+                    Center(
+                        child: Text(
                       'Way to go! With Lucerna, you have tracked ${totalCarbonFootprint.toStringAsFixed(2)} kg of carbon footprint and offset ${totalCarbonOffset.toStringAsFixed(2)} kg. \nSmall steps, big impact!  🌍🌱',
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                       textAlign: TextAlign.center,
-                    ),
+                    )),
                     const SizedBox(height: 25),
                     Center(
                       child: Text(

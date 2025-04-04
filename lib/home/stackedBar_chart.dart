@@ -51,8 +51,10 @@ class WeeklyBarChart extends StatelessWidget {
         ),
         const SizedBox(height: 25),
         Expanded(
+            child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: _buildStackedColumnChart(chartData, total, context),
-        ),
+        )),
         const SizedBox(height: 25),
         Text(
           "Energy Weekly Footprint: ${totalEnergy.toStringAsFixed(2)} kg",
@@ -84,11 +86,12 @@ class WeeklyBarChart extends StatelessWidget {
       List<ChartSampleData> chartData, double total, BuildContext context) {
     if (total == 0) {
       return Text(
-        "No record yet. Track your carbon activity now!",
+        "No record yet. \nTrack your carbon activity now!",
         style: Theme.of(context)
             .textTheme
             .headlineLarge!
             .copyWith(color: Colors.white),
+        textAlign: TextAlign.center,
       );
     } else {
       return Padding(
