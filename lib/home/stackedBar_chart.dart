@@ -24,7 +24,7 @@ class WeeklyBarChart extends StatelessWidget {
       double journey = categories['Journey'] ?? 0;
       double food = categories['Food'] ?? 0;
       double energy = categories['Energy'] ?? 0;
-      total = journey + food + energy;
+      total += journey + food + energy;
 
       // Accumulate total footprint per category
       totalJourney += journey;

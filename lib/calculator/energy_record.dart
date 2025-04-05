@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/calculator/cf_summary.dart';
 import 'package:Lucerna/main.dart';
 import 'common_widget.dart';
-import 'carbon_sutra.dart';
+import 'gemini_footprint.dart';
 
 class energyRecord extends StatefulWidget {
   @override

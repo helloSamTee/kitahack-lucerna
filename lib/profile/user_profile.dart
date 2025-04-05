@@ -515,7 +515,8 @@ class _UserProfileState extends State<UserProfile>
   }
 
   Widget _buildApiKeysTab() {
-    return Padding(
+    return SingleChildScrollView(
+        child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
@@ -604,6 +605,6 @@ class _UserProfileState extends State<UserProfile>
           ),
         ],
       ),
-    );
+    ));
   }
 }

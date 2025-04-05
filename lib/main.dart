@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
       title: 'Lucerna',
       theme: appTheme,
       home: LoginPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -140,7 +141,7 @@ ThemeData appTheme = ThemeData(
 
     // text styling for text title
     titleLarge: GoogleFonts.ptSerif(
-      fontSize: 15,
+      fontSize: 17.5,
       fontWeight: FontWeight.bold,
     ),
 
@@ -150,7 +151,7 @@ ThemeData appTheme = ThemeData(
     ),
 
     bodyLarge: GoogleFonts.ptSans(
-      fontSize: 15,
+      fontSize: 12.5,
       fontWeight: FontWeight.bold,
     ),
 
