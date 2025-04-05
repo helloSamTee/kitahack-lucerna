@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Lucerna/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -98,4 +100,70 @@ class GeminiAPIFootprint {
 
     return callAPI(prompt: prompt);
   }
+
+  Future<String> calculateFoodCarbonFootprint({
+    required String boundingBoxesInfo,
+    required Uint8List imageBytes,
+    required String mimeType,
+  }) async {
+    final model = GenerativeModel(
+      model: 'gemini-1.5-pro',
+      apiKey: apiKey,
+    );
+
+    final prompt = '''
+    Estimate the carbon footprint for the food shown in the image using the following bounding box details:
+    $boundingBoxesInfo
+    Only provide the estimate result in kg CO₂.
+    ''';
+
+    print("Gemini prompt prepared: $prompt");
+
+    try {
+      final geminiResponse = await model.generateContent([
+        Content.multi([
+          TextPart(prompt),
+          DataPart(mimeType, imageBytes),
+        ])
+      ]);
+
+      print("Gemini response received: ${geminiResponse.text}");
+      final carbonFootprintText = geminiResponse.text!;
+      final RegExp regex = RegExp(r'(\d+(\.\d+)?)');
+      final match = regex.firstMatch(carbonFootprintText);
+
+      if (match != null) {
+        print("Carbon footprint extracted: ${match.group(0)}");
+        return match.group(0)!;
+      } else {
+        print("Failed to extract carbon footprint from Gemini response.");
+        throw Exception("Could not parse carbon footprint from Gemini response");
+      }
+    } catch (error) {
+      print("Error in generating content: $error");
+      rethrow;
+    }
+  }
+  // without image bytes
+  // Future<String> calculateFoodCarbonFootprint({
+  //   required String boundingBoxesInfo,
+  //   required Uint8List imageBytes,
+  //   required String mimeType,
+  // }) async {
+  //   final prompt = '''
+  //   Estimate the carbon footprint for the food shown in the image using the following bounding box details:
+  //   $boundingBoxesInfo
+  //   Only provide the estimate result in kg CO₂.
+  //   ''';
+
+  //   print("Gemini prompt prepared: $prompt");
+
+  //   try {
+  //     // Use the existing callAPI function
+  //     return await callAPI(prompt: prompt);
+  //   } catch (error) {
+  //     print("Error in generating content: $error");
+  //     rethrow;
+  //   }
+  // }
 }

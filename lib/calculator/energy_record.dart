@@ -112,6 +112,7 @@ class _EnergyRecordState extends State<energyRecord> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
         backgroundColor: const Color.fromRGBO(200, 200, 200, 1),

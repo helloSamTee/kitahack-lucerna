@@ -186,6 +186,7 @@ class _ChatState extends State<chat> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
         body: SafeArea(

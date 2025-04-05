@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:Lucerna/login/login_page.dart';
+import 'package:http/http.dart' as http;
 //import 'package:Lucerna/login_page.dart';
 import 'firebase_options.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  _bootServer();
 
   runApp(
     MultiProvider(
@@ -171,3 +174,14 @@ ThemeData appTheme = ThemeData(
     ),
   ),
 );
+
+// boot up cloud run function to handle file upload
+Future<void> _bootServer() async {
+  try {
+    final response = await http.post(Uri.parse('https://food-detection-modelv2-193945562879.us-central1.run.app/predict'));
+    print("Server boot-up request sent successfully.");
+  } catch (e) {
+    // Catch and ignore any errors
+    print("server boot-up: $e");
+  }
+}

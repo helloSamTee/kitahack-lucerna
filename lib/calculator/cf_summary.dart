@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:Lucerna/auth_provider.dart';
 import 'package:Lucerna/class_models/carbon_record.dart';
 import 'package:Lucerna/common_widget.dart';
@@ -16,6 +18,7 @@ class CFSummaryPage extends StatelessWidget {
   final String? vehicleType;
   final String? distance;
   final String? energyUsed;
+  final Uint8List? image; // food image
 
   // Constructor to receive the data
   CFSummaryPage({
@@ -26,6 +29,7 @@ class CFSummaryPage extends StatelessWidget {
     required this.vehicleType,
     required this.distance,
     required this.energyUsed,
+    this.image,
   });
 
   final FirestoreService _firestoreService = FirestoreService();
@@ -69,6 +73,20 @@ class CFSummaryPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const SizedBox(height: 25),
+                          // Image section
+                          image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.memory(
+                                    image!,
+                                    height: 200,
+                                    width: 300,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Container(),
+                          const SizedBox(height: 25),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [

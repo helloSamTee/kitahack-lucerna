@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:Lucerna/calculator/common_widget.dart';
+import 'package:Lucerna/calculator/gemini_footprint.dart';
 import 'package:Lucerna/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +9,9 @@ import '../main.dart';
 import 'package:image_picker/image_picker.dart'; // For picking images/documents
 import 'package:google_generative_ai/google_generative_ai.dart';
 import '../API_KEY_Config.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class foodRecord extends StatefulWidget {
   @override
@@ -19,6 +23,7 @@ class _FoodRecordState extends State<foodRecord> {
   final TextEditingController _titleController = TextEditingController();
   XFile? _selectedFile; // Track attached file
   Uint8List? _selectedImageBytes; // Store image bytes for preview
+  Uint8List? _decodedImageBytes; // Store decoded image bytes for display
 
   Future<String> calculateCarbonFootprintFromFile(XFile? file) async {
     if (file == null) {
@@ -26,53 +31,90 @@ class _FoodRecordState extends State<foodRecord> {
       throw Exception("No file selected");
     }
 
-    print("Initializing GenerativeModel...");
-
-    final model = GenerativeModel(
-      model: 'gemini-1.5-pro',
-      apiKey: ApiKeyConfig.geminiApiKey,
-    );
-
-    final prompt = '''
-      Estimate the carbon footprint for the food shown in the provided image.
-      dont say anything else, Only provide the estimate result in kg CO₂.
-    ''';
-
-    print("Prompt prepared: $prompt");
-
     final imageBytes = await file.readAsBytes();
     print("Image read successfully, size: ${imageBytes.lengthInBytes} bytes");
 
-    final mimeType = 'image/jpeg';
+    final cloudRunEndpointUrl = 'https://food-detection-modelv2-193945562879.us-central1.run.app/predict';
+    final uri = Uri.parse(cloudRunEndpointUrl);
 
-    try {
-      final response = await model.generateContent([
-        Content.multi([TextPart(prompt), DataPart(mimeType, imageBytes)])
-      ]);
+    String fileExtension = file.path.split('.').last.toLowerCase();
+    String mimeType = fileExtension == 'png'
+        ? 'image/png'
+        : (fileExtension == 'jpg' || fileExtension == 'jpeg')
+            ? 'image/jpeg'
+            : 'image/jpeg'; // fallback
 
-      print("Response received: ${response.text}");
-
-      final carbonFootprintText = response.text!;
-      final RegExp regex = RegExp(r'(\d+(\.\d+)?)');
-      final match = regex.firstMatch(carbonFootprintText);
-
-      if (match != null) {
-        print("Carbon footprint extracted: ${match.group(0)}");
-        return match.group(0)!;
-      } else {
-        print("Failed to extract carbon footprint from response.");
-        throw Exception(
-            "Could not parse carbon footprint from Gemini response");
-      }
-    } catch (error) {
-      print("Error in generating content: $error");
-      rethrow;
+    final mimeParts = mimeType.split('/');
+    if (mimeParts.length != 2) {
+      throw Exception("Invalid MIME type: $mimeType");
     }
+
+    final request = http.MultipartRequest('POST', uri);
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        'file',
+        imageBytes,
+        filename: file.name,
+        contentType: MediaType(mimeParts[0], mimeParts[1]),
+      ),
+    );
+
+    print("Sending request to Cloud Run...");
+    final streamedResponse = await request.send();
+    final responseBody = await streamedResponse.stream.transform(utf8.decoder).join();
+
+    if (streamedResponse.statusCode != 200) {
+      print("Cloud Run request failed: ${streamedResponse.statusCode}");
+      throw Exception("Cloud Run request failed");
+    }
+
+    final Map<String, dynamic> cloudRunResult = jsonDecode(responseBody);
+    print("Cloud Run JSON response: $cloudRunResult");
+
+    final detectionDetails = cloudRunResult['detection_details'];
+    if (detectionDetails == null || detectionDetails is! List) {
+      throw Exception("Invalid detection details from Cloud Run");
+    }
+
+    // Parse and decode the base64 image from the response
+    final String? base64ImageString = cloudRunResult['image_base64'];
+    if (base64ImageString != null) {
+      final decodedImage = base64Decode(base64ImageString);
+      // Optionally update the state so the image can be displayed in your UI
+      setState(() {
+        _decodedImageBytes = decodedImage;
+      });
+      print("Base64 image decoded successfully.");
+    } else {
+      print("No base64 image found in the response.");
+    }
+
+    StringBuffer boundingBoxesBuffer = StringBuffer();
+    for (var detail in detectionDetails) {
+      final boundingBox = detail['bounding_box_normalized'];
+      final className = detail['class_name'];
+      if (boundingBox != null && className != null) {
+        boundingBoxesBuffer.writeln(
+          "$className: (xmin: ${boundingBox['xmin']}, ymin: ${boundingBox['ymin']}, xmax: ${boundingBox['xmax']}, ymax: ${boundingBox['ymax']})",
+        );
+      }
+    }
+    final boundingBoxesInfo = boundingBoxesBuffer.toString();
+    print("Extracted bounding boxes info: \n$boundingBoxesInfo");
+
+    // Use the Gemini API function from gemini_footprint.dart
+    final geminiAPI = GeminiAPIFootprint(context);
+    return await geminiAPI.calculateFoodCarbonFootprint(
+      boundingBoxesInfo: boundingBoxesInfo,
+      imageBytes: imageBytes,
+      mimeType: mimeType,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
         backgroundColor: const Color.fromRGBO(200, 200, 200, 1),
@@ -211,26 +253,57 @@ class _FoodRecordState extends State<foodRecord> {
       // Get input values
       String title = _titleController.text;
 
-      /*
-                Gemini API call here!!
-                Pass the carbon footprint and suggestion to CFSummaryPage constructor
-                */
-      String carbonFootprint =
-          await calculateCarbonFootprintFromFile(_selectedFile);
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevent closing by tapping outside
+        builder: (context) {
+          return AlertDialog(
+            content: Row(
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text('Calculating...'),
+              ],
+            ),
+          );
+        },
+      );
 
-      // Navigate to the new page with the inputs
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CFSummaryPage(
-                    title: title,
-                    category: 'Food',
-                    carbon_footprint: carbonFootprint,
-                    suggestion: '',
-                    vehicleType: null,
-                    distance: null,
-                    energyUsed: null,
-                  )));
+      try {
+        String carbonFootprint =
+            await calculateCarbonFootprintFromFile(_selectedFile);
+        
+        // Dismiss the loading dialog using the root navigator to ensure it pops the dialog
+        Navigator.of(context, rootNavigator: true).pop();
+        // Navigate to the new page with the inputs
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CFSummaryPage(
+                      title: title,
+                      category: 'Food',
+                      carbon_footprint: carbonFootprint,
+                      suggestion: '',
+                      vehicleType: null,
+                      distance: null,
+                      energyUsed: null,
+                      image: _decodedImageBytes,
+                    )));
+      } catch (error) {
+        // Dismiss the loading dialog using the root navigator if there's an error
+        Navigator.of(context, rootNavigator: true).pop();
+
+        // Optionally, show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            content: Text(
+              'Error calculating carbon footprint: $error',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+            ),
+          ),
+        );
+      }
     } else if (_selectedFile == null) {
       // Show error if no file is attached
       ScaffoldMessenger.of(context).showSnackBar(

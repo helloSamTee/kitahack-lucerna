@@ -4,6 +4,7 @@ import 'package:Lucerna/calculator/carbon_footprint.dart';
 import 'package:Lucerna/common_widget.dart';
 import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/home/dashboard.dart';
+import 'package:Lucerna/login/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -503,10 +504,15 @@ class _UserProfileState extends State<UserProfile>
               minimumSize: const Size(double.infinity, 50),
             ),
             onPressed: () async {
-              await Provider.of<LucernaAuthProvider.AuthProvider>(context,
-                      listen: false)
+              await Provider.of<LucernaAuthProvider.AuthProvider>(context, listen: false)
                   .logout();
-              Navigator.popUntil(context, (route) => route.isFirst);
+
+              // Navigate to the LoginPage
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false, // Remove all previous routes
+              );
             },
           ),
         ],
@@ -542,24 +548,24 @@ class _UserProfileState extends State<UserProfile>
           ),
           const SizedBox(height: 20),
           // Carbon Sutra API Key Field
-          TextField(
-            controller: _carbonSutraApiKeyController,
-            obscureText: !_isApiKeyVisible,
-            readOnly: !_isEditingApiKeys,
-            decoration: InputDecoration(
-              labelText: "Carbon Sutra API Key",
-              labelStyle: const TextStyle(fontSize: 18),
-              floatingLabelStyle: const TextStyle(fontSize: 25),
-              border: const OutlineInputBorder(),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _isApiKeyVisible ? Icons.visibility_off : Icons.visibility,
-                ),
-                onPressed: () =>
-                    setState(() => _isApiKeyVisible = !_isApiKeyVisible),
-              ),
-            ),
-          ),
+          // TextField(
+          //   controller: _carbonSutraApiKeyController,
+          //   obscureText: !_isApiKeyVisible,
+          //   readOnly: !_isEditingApiKeys,
+          //   decoration: InputDecoration(
+          //     labelText: "Carbon Sutra API Key",
+          //     labelStyle: const TextStyle(fontSize: 18),
+          //     floatingLabelStyle: const TextStyle(fontSize: 25),
+          //     border: const OutlineInputBorder(),
+          //     suffixIcon: IconButton(
+          //       icon: Icon(
+          //         _isApiKeyVisible ? Icons.visibility_off : Icons.visibility,
+          //       ),
+          //       onPressed: () =>
+          //           setState(() => _isApiKeyVisible = !_isApiKeyVisible),
+          //     ),
+          //   ),
+          // ),
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () async {

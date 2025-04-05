@@ -96,6 +96,7 @@ class _JourneyRecordState extends State<journeyRecord> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
         backgroundColor: const Color.fromRGBO(200, 200, 200, 1),

@@ -96,6 +96,7 @@ class _dashboardState extends State<dashboard> {
   Widget build(BuildContext context) {
     totalCarbonOffset = totalCarbonFootprint * 0.75;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         theme: appTheme,
         home: Scaffold(
           appBar: CommonAppBar(title: "Dashboard"),
