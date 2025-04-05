@@ -14,20 +14,6 @@ class CarbonFootprintTracker extends StatefulWidget {
 }
 
 class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
-  // // List to store history records dynamically.
-  // List<Map<String, String>> _history = [];
-
-  // // Method to add new record based on category type
-  // void _addRecord(String category) {
-  //   setState(() {
-  //     _history.add({
-  //       'title': 'Title',
-  //       'category': category, // Example value
-  //       'carbonFootprint': '10 kg', // Example value
-  //     });
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -45,14 +31,12 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryProvider>(context);
 
-    return
-        //   MaterialApp(
-        // theme: appTheme,
-        // home:
-        Scaffold(
+    return Scaffold(
       backgroundColor: Color.fromRGBO(
           200, 200, 200, 1), // const Color.fromRGBO(173, 191, 127, 1),
       body: SafeArea(
+          child: SingleChildScrollView(
+        // Wrapping the entire body in a SingleChildScrollView
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -63,9 +47,9 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium!
-                  .copyWith(color: Color.fromRGBO(0, 0, 0, 0.5)),
+                  .copyWith(color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 15),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -82,12 +66,10 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
               ],
             ),
             const SizedBox(height: 50),
-            Expanded(
-              child: _buildHistorySection(context, historyProvider),
-            ),
+            _buildHistorySection(context, historyProvider),
           ],
         ),
-      ),
+      )),
       appBar: CommonAppBar(title: "Carbon Footprint"),
       bottomNavigationBar:
           CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
@@ -173,7 +155,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
               ),
             ],
           ),
-          constraints: const BoxConstraints(minHeight: 200),
+          constraints: const BoxConstraints(maxHeight: 400),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(30, 20, 30, 15),
             child: Column(
@@ -188,15 +170,13 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                // Text(
-                //   'View your recent carbon footprint records here.',
-                //   style: TextStyle(
-                //     fontSize: 16,
-                //     color: Colors.black54,
-                //   ),
-                //),
-                Expanded(
+                Container(
+                  height:
+                      300, // Make sure it has a fixed height or use scrollable content
                   child: _buildHistoryList(historyProvider),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
               ],
             ),

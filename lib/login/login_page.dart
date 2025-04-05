@@ -163,7 +163,8 @@ class _LoginPageState extends State<LoginPage> {
                               .textTheme
                               .headlineLarge!
                               .copyWith(
-                                  color: Theme.of(context).colorScheme.primary),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 30),
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -174,7 +175,8 @@ class _LoginPageState extends State<LoginPage> {
                               .titleSmall!
                               .copyWith(
                                   color:
-                                      Theme.of(context).colorScheme.secondary),
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 15),
                         ),
                         const SizedBox(height: 50),
                         _buildTextField(_emailController, 'Email'),
