@@ -1,0 +1,2 @@
+C:/Users/User/Documents/CodingProjects/kitahack-lucerna/android/app/.cxx/RelWithDebInfo/1o1o60a3/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/User/Documents/CodingProjects/kitahack-lucerna/android/app/.cxx/RelWithDebInfo/1o1o60a3/x86_64/CMakeFiles/rebuild_cache.dir

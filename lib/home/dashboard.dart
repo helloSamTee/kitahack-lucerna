@@ -96,7 +96,7 @@ class _dashboardState extends State<dashboard> {
   Widget build(BuildContext context) {
     totalCarbonOffset = totalCarbonFootprint * 0.75;
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         theme: appTheme,
         home: Scaffold(
           appBar: CommonAppBar(title: "Dashboard"),
@@ -144,10 +144,12 @@ class _dashboardState extends State<dashboard> {
                       child: Text(
                         'Latest Carbon Activity',
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 20),
                       ),
                     ),
+                    const SizedBox(height: 10),
+
                     _buildLatestCarbonRecord(record, context),
                   ],
                 ),
