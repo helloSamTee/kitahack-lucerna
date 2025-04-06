@@ -1,15 +1,12 @@
-import 'package:flutter/foundation.dart';
+import 'package:Lucerna/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/energy_record.dart';
 import 'package:Lucerna/calculator/food_record.dart';
 import 'package:Lucerna/calculator/journey_record.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
-import 'package:Lucerna/main.dart';
 import 'package:provider/provider.dart';
 import 'history_provider.dart'; // Import the provider
+import 'package:Lucerna/auth_provider.dart'; // Import firebase provider
 
 class CarbonFootprintTracker extends StatefulWidget {
   @override
@@ -17,77 +14,67 @@ class CarbonFootprintTracker extends StatefulWidget {
 }
 
 class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
-  // // List to store history records dynamically.
-  // List<Map<String, String>> _history = [];
-
-  // // Method to add new record based on category type
-  // void _addRecord(String category) {
-  //   setState(() {
-  //     _history.add({
-  //       'title': 'Title',
-  //       'category': category, // Example value
-  //       'carbonFootprint': '10 kg', // Example value
-  //     });
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final historyProvider =
+          Provider.of<HistoryProvider>(context, listen: false);
+      if (authProvider.user != null) {
+        historyProvider.loadHistoryFromFirestore(authProvider.user!.uid);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final historyProvider = Provider.of<HistoryProvider>(context);
 
-    return MaterialApp(
-      theme: appTheme,
-      home: Scaffold(
-          backgroundColor: const Color.fromRGBO(173, 191, 127, 1),
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(
+          200, 200, 200, 1), // const Color.fromRGBO(173, 191, 127, 1),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        // Wrapping the entire body in a SingleChildScrollView
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 30),
+            Text(
+              'Add a record of the below categories:',
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 15),
+            ),
+            const SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                    padding: EdgeInsets.fromLTRB(30, 50, 30, 30),
-                    child: Text(
-                      'Track\nCarbon Footprint',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge!
-                          .copyWith(color: Colors.white),
-                    )),
-                Text(
-                  'Add a record of the below categories:',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildCategoryButton(
-                        'Food',
-                        Theme.of(context).colorScheme.tertiary,
-                        'assets/food.png'),
-                    _buildCategoryButton(
-                        'Journey',
-                        Theme.of(context).colorScheme.surface,
-                        'assets/journey.png'),
-                    _buildCategoryButton(
-                        'Energy',
-                        Theme.of(context).colorScheme.surfaceBright,
-                        'assets/energy.png'),
-                  ],
-                ),
-                const SizedBox(height: 50),
-                Expanded(
-                  child: _buildHistorySection(context),
-                ),
+                _buildCategoryButton('Food',
+                    Theme.of(context).colorScheme.tertiary, 'assets/food.png'),
+                _buildCategoryButton(
+                    'Journey',
+                    Theme.of(context).colorScheme.surface,
+                    'assets/journey.png'),
+                _buildCategoryButton(
+                    'Energy',
+                    Theme.of(context).colorScheme.surfaceBright,
+                    'assets/energy.png'),
               ],
             ),
-          ),
-          bottomNavigationBar: _buildBottomNavigationBar(context)),
+            const SizedBox(height: 50),
+            _buildHistorySection(context, historyProvider),
+          ],
+        ),
+      )),
+      appBar: CommonAppBar(title: "Carbon Footprint"),
+      bottomNavigationBar:
+          CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
     );
+    // );
   }
 
   // Helper function to build category buttons
@@ -145,7 +132,8 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
     );
   }
 
-  Widget _buildHistorySection(BuildContext context) {
+  Widget _buildHistorySection(
+      BuildContext context, HistoryProvider historyProvider) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: ClipRRect(
@@ -167,7 +155,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
               ),
             ],
           ),
-          constraints: const BoxConstraints(minHeight: 200),
+          constraints: const BoxConstraints(maxHeight: 400),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(30, 20, 30, 15),
             child: Column(
@@ -182,15 +170,13 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                // Text(
-                //   'View your recent carbon footprint records here.',
-                //   style: TextStyle(
-                //     fontSize: 16,
-                //     color: Colors.black54,
-                //   ),
-                //),
-                Expanded(
-                  child: _buildHistoryList(),
+                Container(
+                  height:
+                      300, // Make sure it has a fixed height or use scrollable content
+                  child: _buildHistoryList(historyProvider),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
               ],
             ),
@@ -231,8 +217,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
   }
 
   // Widget to build the history list dynamically
-  Widget _buildHistoryList() {
-    final historyProvider = Provider.of<HistoryProvider>(context);
+  Widget _buildHistoryList(HistoryProvider historyProvider) {
     final history = historyProvider.history;
 
     return ListView.builder(
@@ -303,58 +288,6 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
     );
   }
 }
-
-Widget _buildBottomNavigationBar(BuildContext context) {
-  return BottomAppBar(
-    color: Color.fromRGBO(173, 191, 127, 1),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-            icon: const Icon(
-              Icons.pie_chart,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => dashboard()),
-              );
-            }),
-        IconButton(
-            icon: const Icon(
-              Icons.lightbulb,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ecolight_stat()),
-              );
-            }),
-        IconButton(
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.black,
-            ),
-            onPressed: () {}),
-        IconButton(
-            icon: Image.asset('assets/chat-w.png'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => chat(
-                        carbonFootprint: '10', showAddRecordButton: false)),
-              );
-            }),
-      ],
-    ),
-  );
-}
-
-
-
 
 // SingleChildScrollView(
 //                   child: Column(

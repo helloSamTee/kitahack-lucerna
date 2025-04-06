@@ -1,7 +1,9 @@
+import 'package:Lucerna/auth_provider.dart' as lucerna_auth;
+import 'package:Lucerna/calculator/history_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/home/dashboard.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:pure_dart_ui/pure_dart_ui.dart' as ui;
@@ -32,41 +34,53 @@ class _LoginPageState extends State<LoginPage> {
       _errorMessage = null; // Reset error message on each login attempt
     });
 
-    try {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
+    if (_formKey.currentState!.validate()) {
+      try {
+        final email = _emailController.text.trim();
+        final password = _passwordController.text.trim();
 
-      final userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+        // Use AuthProvider for authentication
+        await Provider.of<lucerna_auth.AuthProvider>(context, listen: false)
+            .login(email, password);
 
-      // Navigate to dashboard on successful login
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => dashboard()),
-      );
-    } on FirebaseAuthException {
-      setState(() {
-        _errorMessage =
-            "Wrong Email or Password"; // Set error message from Firebase exception
-      });
-    } catch (e) {
-      setState(() {
-        _errorMessage = "Wrong Email or Password"; // Set general error message
-      });
+        // Check if user is authenticated
+        final user =
+            Provider.of<lucerna_auth.AuthProvider>(context, listen: false).user;
+        if (user != null) {
+          // Load history from Firestore
+          final historyProvider =
+              Provider.of<HistoryProvider>(context, listen: false);
+          await historyProvider.loadHistoryFromFirestore(user.uid);
+
+          // Navigate to dashboard on successful login
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => dashboard()),
+          );
+        } else {
+          setState(() {
+            _errorMessage = "Failed to login. Please try again.";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _errorMessage =
+              "Wrong Email or Password"; // Set general error message
+        });
+      }
     }
   }
 
   @override
   void initState() {
-    _controller = VideoPlayerController.asset("videos/login.mp4");
-    _initializeVideoPlayerFuture =
-        _controller.initialize().then((value) => _controller.play());
-    _controller.setLooping(true);
-    _controller.setVolume(0.0);
-    _controller.setPlaybackSpeed(0.5);
-    super.initState();
+    // _controller = VideoPlayerController.asset("videos/login.mp4");
+    // _initializeVideoPlayerFuture =
+    //     _controller.initialize().then((value) => _controller.play());
+    // _controller.setLooping(true);
+    // _controller.setVolume(0.0);
+    // _controller.setPlaybackSpeed(0.5);
+    // super.initState();
+
     // controller = WebViewController()
     //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
     //   ..setNavigationDelegate(
@@ -92,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         theme: appTheme,
         home: Scaffold(
             body: SafeArea(
@@ -107,32 +122,64 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment
                     .center, // Centers all components vertically
                 children: [
-                  // Video
-                  FutureBuilder(
-                    future: _initializeVideoPlayerFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return SizedBox(
-                          width:
-                              double.infinity, // Stretch to full screen width
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          ),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
+                  const SizedBox(height: 50),
+                  Image.asset(
+                    'assets/login.jpg',
+                    width: MediaQuery.of(context).size.width,
+                    // height: MediaQuery.of(context).size.height * 0.3,
                   ),
+
+                  // Video
+                  // FutureBuilder(
+                  //   future: _initializeVideoPlayerFuture,
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.done) {
+                  //       return SizedBox(
+                  //         width:
+                  //             double.infinity, // Stretch to full screen width
+                  //         child: AspectRatio(
+                  //           aspectRatio: _controller.value.aspectRatio,
+                  //           child: VideoPlayer(_controller),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       return Center(child: CircularProgressIndicator());
+                  //     }
+                  //   },
+                  // ),
+
                   // Input Form
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 80, vertical: 75),
+                    padding: const EdgeInsets.fromLTRB(50, 30, 50, 50),
+                    // .symmetric(
+                    //     horizontal: 80, vertical: 75),
                     child: Column(
                       mainAxisSize: MainAxisSize.min, // Keeps it compact
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Text(
+                          'Lucerna',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge!
+                              .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 30),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Eco-Friendly Living Starts Here.',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 15),
+                        ),
+                        const SizedBox(height: 50),
                         _buildTextField(_emailController, 'Email'),
                         const SizedBox(height: 20),
                         _buildTextField(_passwordController, 'Password',
@@ -212,7 +259,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Text(
           'Login',
-          style: Theme.of(context).textTheme.displayLarge,
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(color: Colors.white),
         ),
       ),
     );
@@ -234,7 +284,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Text(
           'Register',
-          style: Theme.of(context).textTheme.displayLarge,
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(color: Colors.white),
         ),
       ),
     );

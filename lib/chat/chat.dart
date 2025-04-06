@@ -1,11 +1,13 @@
+import 'package:Lucerna/common_widget.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/calculator/history_provider.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
+import 'package:Lucerna/auth_provider.dart';
+import 'package:http/http.dart' as http;
 import '../API_KEY_Config.dart';
 
 class chat extends StatefulWidget {
@@ -87,10 +89,19 @@ class _ChatState extends State<chat> {
   }
 
   Future<String> _getGeminiResponse(String userMessage) async {
-    final model = GenerativeModel(
-      model: 'gemini-1.5-pro',
-      apiKey: ApiKeyConfig.geminiApiKey,
-    );
+    final geminiApiKey = Provider.of<AuthProvider>(
+      context,
+      listen: false,
+    ).geminiApiKey;
+
+    final apiKeyToUse =
+        geminiApiKey.isNotEmpty ? geminiApiKey : ApiKeyConfig.geminiApiKey;
+
+    // final model = GenerativeModel(
+    //   model: 'gemini-1.5-pro',
+    //   apiKey: apiKeyToUse,
+    // );
+    final setLLMKeyFlag = await _setLLMKey(apiKeyToUse);
 
     String chatHistory = messages.map((msg) {
       return '${msg['type'] == 'user' ? 'User' : 'Bot'}: ${msg['text']}';
@@ -115,25 +126,67 @@ class _ChatState extends State<chat> {
         Here is the chat history:
         $chatHistory
         User said: "$userMessage". 
-        Guide the user on how their historical footprint reflects on their lifestyle, and offer suggestions on how they can improve.
+        Please answer the user's question. 
+        If the question has any relation to the user's cumulative carbon footprint, 
+        then guide the user on how their 
+        historical footprint reflects on their lifestyle, and offer suggestions on how they can improve.
         Respond in a concise manner, limiting your response to 60 words.
       ''';
     }
 
     try {
-      final response = await model.generateContent([Content.text(prompt)]);
-      final responseText = response.text ?? 'No response from Gemini.';
-      final words = responseText.split(' ');
-      return words.take(60).join(' ');
+      final response = await http.get(
+        Uri.parse(
+            'https://rag-api-193945562879.us-central1.run.app/query?query=${Uri.encodeComponent(prompt)}'),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final responseText =
+            responseData['response'] ?? 'No response from Gemini.';
+        final words = responseText.split(' ');
+        return words.take(60).join(' ');
+      } else {
+        print('API Error: ${response.statusCode} - ${response.body}');
+        return 'Sorry, there was an error getting a response.';
+      }
     } catch (e) {
       print('Error calling Gemini API: $e');
       return 'Sorry, there was an error getting a response.';
     }
   }
 
+  // New function to set LLM API Key
+  Future<int> _setLLMKey(String apiKey) async {
+    final apiUrl =
+        'https://rag-api-193945562879.us-central1.run.app/secure-endpoint/api_key'; // Replace with your API endpoint
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': apiKey, // Sending API key in the header
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['Info'] == 'API KEY INVALID' ? 1 : 0;
+      } else {
+        print('API Error: ${response.statusCode} - ${response.body}');
+        return 1;
+      }
+    } catch (e) {
+      print('Error calling API: $e');
+      return 1;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
         body: SafeArea(
@@ -141,20 +194,13 @@ class _ChatState extends State<chat> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
-                Text(
-                  'Chat with AI',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge!
-                      .copyWith(color: Theme.of(context).colorScheme.primary),
-                ),
                 const SizedBox(height: 30),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFB7C49D), // Green box
+                      color: Color.fromRGBO(200, 200, 200,
+                          1), // const Color(0xFFB7C49D), // Green box
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -221,7 +267,9 @@ class _ChatState extends State<chat> {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomNavigationBar(context),
+        appBar: CommonAppBar(title: "Chat with AI"),
+        bottomNavigationBar:
+            CommonBottomNavigationBar(selectedTab: BottomTab.chat),
       ),
     );
   }
@@ -342,42 +390,6 @@ class _ChatState extends State<chat> {
             color: isUserMessage ? Colors.black : Colors.black87,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return BottomAppBar(
-      color: const Color.fromRGBO(173, 191, 127, 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: const Icon(Icons.pie_chart, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dashboard()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(Icons.lightbulb, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ecolight_stat()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(Icons.edit, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CarbonFootprintTracker()));
-              }),
-          IconButton(icon: Image.asset('assets/chat-b.png'), onPressed: () {}),
-        ],
       ),
     );
   }

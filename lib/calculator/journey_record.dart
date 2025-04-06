@@ -1,14 +1,10 @@
+import 'package:Lucerna/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:Lucerna/calculator/cf_summary.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'common_widget.dart';
-import 'carbon_sutra.dart';
+import 'gemini_footprint.dart';
 
 class journeyRecord extends StatefulWidget {
   @override
@@ -84,47 +80,29 @@ class _JourneyRecordState extends State<journeyRecord> {
     'Average'
   ];
   String selectedFlightClass = "Average";
-  final CarbonSutraAPI api = CarbonSutraAPI();
+  // final CarbonSutraAPI api = CarbonSutraAPI();
 
-  Future<String> calculateCarbonFootprintFromFlight(
-      String flightFrom,
-      String flightTo,
-      String flightClass,
-      String roundTrip,
-      String numPassenger) async {
-    final response = await api.calcFlight(
-        flightFrom: flightFrom,
-        flightTo: flightTo,
-        flightClass: selectedFlightClass,
-        roundTrip: roundTrip,
-        numPassenger: numPassenger);
+  // check carbon sutra api from user
+  late GeminiAPIFootprint api;
 
-    if (response != null) {
-      return response['data']['co2e_kg'].toString();
-    } else {
-      return "0";
-    }
-  }
+  @override
+  void initState() {
+    super.initState();
 
-  Future<String> calculateCarbonFootprintFromVehicle(
-      String vehicleType, String distanceKM, String fuelType) async {
-    final response = await api.calcVehicleByType(
-        vehicleType: vehicleType, distanceKM: distanceKM, fuelType: fuelType);
-
-    if (response != null) {
-      return response['data']['co2e_kg'].toString();
-    } else {
-      return "0";
-    }
+    // Initialize the CarbonSutraAPI with the context
+    api = GeminiAPIFootprint(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
-        backgroundColor: const Color.fromRGBO(173, 191, 127, 1),
-        bottomNavigationBar: _buildBottomNavigationBar(context),
+        backgroundColor: const Color.fromRGBO(200, 200, 200, 1),
+        appBar: CommonAppBar(title: "Track Carbon Footprint"),
+        bottomNavigationBar:
+            CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
@@ -143,8 +121,9 @@ class _JourneyRecordState extends State<journeyRecord> {
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headlineLarge!
-                                  .copyWith(color: Colors.white),
+                                  .headlineMedium!
+                                  .copyWith(
+                                      color: Color.fromRGBO(0, 0, 0, 0.5)),
                             ),
                             const SizedBox(height: 50),
                             buildTextField(context, _titleController, 'Title'),
@@ -225,7 +204,7 @@ class _JourneyRecordState extends State<journeyRecord> {
     );
   }
 
-  // ✅ Ground Transport Fields
+  // Ground Transport Fields
   Widget _buildGroundTransportFields() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -311,12 +290,12 @@ class _JourneyRecordState extends State<journeyRecord> {
                   String carbonFootprint;
                   String finalVehicle;
                   if (selectedVehicle == 'Flight') {
-                    carbonFootprint = await calculateCarbonFootprintFromFlight(
-                        airportFromController.text,
-                        airportToController.text,
-                        selectedFlightClass,
-                        roundTripValue,
-                        numPassengersController.text);
+                    carbonFootprint = await api.calcFlight(
+                        flightFrom: airportFromController.text,
+                        flightTo: airportToController.text,
+                        flightClass: selectedFlightClass,
+                        roundTrip: roundTripValue,
+                        numPassenger: numPassengersController.text);
                     finalVehicle = "Flight ($selectedFlightClass)";
                   } else {
                     switch (selectedVehicle) {
@@ -336,10 +315,10 @@ class _JourneyRecordState extends State<journeyRecord> {
                         finalVehicle = selectedVehicle;
                         break;
                     }
-                    carbonFootprint = await calculateCarbonFootprintFromVehicle(
-                        finalVehicle,
-                        distanceValueController.text,
-                        selectedFuel);
+                    carbonFootprint = await api.calcVehicleByType(
+                        vehicleType: finalVehicle,
+                        distanceKM: distanceValueController.text,
+                        fuelType: selectedFuel);
                   }
 
                   // Navigate to the new page with the inputs
@@ -373,59 +352,6 @@ class _JourneyRecordState extends State<journeyRecord> {
                 ),
               )),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return BottomAppBar(
-      color: Color.fromRGBO(173, 191, 127, 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: const Icon(
-                Icons.pie_chart,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dashboard()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(
-                Icons.lightbulb,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ecolight_stat()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(
-                Icons.edit,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CarbonFootprintTracker()));
-              }),
-          IconButton(
-              icon: Image.asset('assets/chat-w.png'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => chat(
-                          carbonFootprint: '10', showAddRecordButton: false)),
-                );
-              }),
-        ],
       ),
     );
   }

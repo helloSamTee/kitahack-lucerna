@@ -1,9 +1,6 @@
+import 'package:Lucerna/common_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
 import 'package:Lucerna/main.dart';
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math'; // As of now, there is only 1 ecolight hardware, and flask is not connected, so we import to generate random values
@@ -87,61 +84,14 @@ class _ecolight_statState extends State<ecolight_stat> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       home: Scaffold(
         backgroundColor: Colors.white,
         body: EcolightMeasuresScreen(data: latestData),
-        bottomNavigationBar: _buildBottomNavigationBar(),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomAppBar(
-      color: Color.fromRGBO(173, 191, 127, 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              icon: const Icon(
-                Icons.pie_chart,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dashboard()),
-                );
-              }),
-          IconButton(
-              icon: const Icon(
-                Icons.lightbulb,
-                color: Colors.black,
-              ),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(
-                Icons.edit,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CarbonFootprintTracker()),
-                );
-              }),
-          IconButton(
-              icon: Image.asset('assets/chat-w.png'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => chat(
-                          carbonFootprint: '10', showAddRecordButton: false)),
-                );
-              }),
-        ],
+        appBar: CommonAppBar(title: "Ecolight Measures"),
+        bottomNavigationBar:
+            CommonBottomNavigationBar(selectedTab: BottomTab.ecolight),
       ),
     );
   }
@@ -158,15 +108,16 @@ class EcolightMeasuresScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-                child: Text(
-                  'Ecolight \nMeasures',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge!
-                      .copyWith(color: Theme.of(context).colorScheme.primary),
-                )),
+            SizedBox(height: 50),
+            // Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+            //     child: Text(
+            //       'Ecolight \nMeasures',
+            //       style: Theme.of(context)
+            //           .textTheme
+            //           .headlineLarge!
+            //           .copyWith(color: Theme.of(context).colorScheme.primary),
+            //     )),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -207,7 +158,8 @@ class EcolightMeasuresScreen extends StatelessWidget {
                 ),
                 Image.asset('assets/lamp.png', height: 535),
               ],
-            )
+            ),
+            SizedBox(height: 50),
           ],
         ),
       ),

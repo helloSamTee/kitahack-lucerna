@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:Lucerna/calculator/carbon_footprint.dart';
-import 'package:Lucerna/chat/chat.dart';
-import 'package:Lucerna/home/dashboard.dart';
-import 'package:Lucerna/calculator/journey_record.dart';
-import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/login/login_page.dart';
+import 'package:http/http.dart' as http;
 //import 'package:Lucerna/login_page.dart';
 import 'firebase_options.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'calculator/history_provider.dart'; // Import the provider
+import 'auth_provider.dart' as LucernaAuthProvider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +15,38 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => HistoryProvider()..loadHistory(), // Load on startup
-    child: MyApp(),
-  ));
+  _bootServer();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => LucernaAuthProvider.AuthProvider()),
+        ChangeNotifierProvider(create: (context) => HistoryProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+
+//   // Set Firebase session persistence
+//   await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+
+//   runApp(
+//     MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider(create: (context) => LucernaAuthProvider.AuthProvider()),
+//         ChangeNotifierProvider(create: (context) => HistoryProvider()),
+//       ],
+//       child: const MyApp(),
+//     ),
+//   );
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -33,9 +57,47 @@ class MyApp extends StatelessWidget {
       title: 'Lucerna',
       theme: appTheme,
       home: LoginPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<User?>(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           // Show a loading screen while checking auth state
+//           return const MaterialApp(
+//             home: Scaffold(
+//               body: Center(child: CircularProgressIndicator()),
+//             ),
+//           );
+//         }
+
+//         if (snapshot.hasData) {
+//           // User is logged in, navigate to the dashboard
+//           return MaterialApp(
+//             title: 'Lucerna',
+//             theme: appTheme,
+//             home: const dashboard(),
+//           );
+//         } else {
+//           // User is not logged in, navigate to the login page
+//           return MaterialApp(
+//             title: 'Lucerna',
+//             theme: appTheme,
+//             home: const LoginPage(),
+//           );
+//         }
+//       },
+//     );
+//   }
+// }
 
 ThemeData appTheme = ThemeData(
   useMaterial3: false,
@@ -61,14 +123,14 @@ ThemeData appTheme = ThemeData(
   textTheme: TextTheme(
     // text styling for page title
     headlineLarge: GoogleFonts.ptSansCaption(
-      fontSize: 35,
+      fontSize: 25,
       fontWeight: FontWeight.bold,
       //height: 35,
       letterSpacing: 3.5,
     ),
 
     headlineMedium: GoogleFonts.ptSansCaption(
-      fontSize: 25,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
       //height: 35,
       letterSpacing: 3.5,
@@ -76,32 +138,33 @@ ThemeData appTheme = ThemeData(
 
     // text styling for button
     displayLarge: GoogleFonts.ptSansCaption(
-      fontSize: 17.5,
+      fontSize: 15,
       fontWeight: FontWeight.bold,
     ),
 
     // text styling for text title
     titleLarge: GoogleFonts.ptSerif(
-      fontSize: 20,
+      fontSize: 17.5,
       fontWeight: FontWeight.bold,
     ),
 
     titleSmall: GoogleFonts.ptSerif(
-      fontSize: 15,
+      fontSize: 10,
       fontWeight: FontWeight.bold,
     ),
 
     bodyLarge: GoogleFonts.ptSans(
-      fontSize: 15,
+      fontSize: 12.5,
+      fontWeight: FontWeight.bold,
     ),
 
     bodyMedium: GoogleFonts.ptSansNarrow(
-      fontSize: 15,
+      fontSize: 10,
       fontWeight: FontWeight.bold,
     ),
 
     bodySmall: GoogleFonts.ptSans(
-      fontSize: 12.5,
+      fontSize: 10,
     ),
 
     // TextField in Carbon Footprint Form
@@ -111,3 +174,14 @@ ThemeData appTheme = ThemeData(
     ),
   ),
 );
+
+// boot up cloud run function to handle file upload
+Future<void> _bootServer() async {
+  try {
+    final response = await http.post(Uri.parse('https://food-detection-modelv2-193945562879.us-central1.run.app/predict'));
+    print("Server boot-up request sent successfully.");
+  } catch (e) {
+    // Catch and ignore any errors
+    print("server boot-up: $e");
+  }
+}
