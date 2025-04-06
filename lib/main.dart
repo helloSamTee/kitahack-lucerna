@@ -159,7 +159,7 @@ ThemeData appTheme = ThemeData(
     ),
 
     bodyMedium: GoogleFonts.ptSansNarrow(
-      fontSize: 10,
+      fontSize: 12.5,
       fontWeight: FontWeight.bold,
     ),
 
@@ -178,7 +178,8 @@ ThemeData appTheme = ThemeData(
 // boot up cloud run function to handle file upload
 Future<void> _bootServer() async {
   try {
-    final response = await http.post(Uri.parse('https://food-detection-modelv2-193945562879.us-central1.run.app/predict'));
+    final response = await http.post(Uri.parse(
+        'https://food-detection-modelv2-193945562879.us-central1.run.app/predict'));
     print("Server boot-up request sent successfully.");
   } catch (e) {
     // Catch and ignore any errors

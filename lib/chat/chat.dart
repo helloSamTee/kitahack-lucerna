@@ -199,8 +199,8 @@ class _ChatState extends State<chat> {
                   child: Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(200, 200, 200,
-                          1), // const Color(0xFFB7C49D), // Green box
+                      color: const Color(
+                          0xFFB7C49D), //Color.fromRGBO(200, 200, 200,1), //
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -387,8 +387,8 @@ class _ChatState extends State<chat> {
         child: Text(
           message['text']!,
           style: TextStyle(
-            color: isUserMessage ? Colors.black : Colors.black87,
-          ),
+              color: isUserMessage ? Colors.black : Colors.black87,
+              fontSize: 15),
         ),
       ),
     );

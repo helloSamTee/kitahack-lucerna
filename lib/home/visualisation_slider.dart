@@ -59,9 +59,8 @@ class CarbonVisualizationScreen extends StatelessWidget {
       height: 300,
       child: DecoratedBox(
         decoration: const BoxDecoration(
-          color: Color.fromRGBO(200, 200, 200, 1), // Gray background
-          borderRadius:
-              BorderRadius.all(Radius.circular(15)), // Optional styling
+          color: Color(0xFFB7C49D), // Color.fromRGBO(200, 200, 200, 1),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         child: visualisation,
       ),
