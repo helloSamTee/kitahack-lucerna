@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => dashboard()),
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       setState(() {
         _errorMessage =
             "Wrong Email or Password"; // Set error message from Firebase exception

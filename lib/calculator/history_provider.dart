@@ -35,13 +35,11 @@ class HistoryProvider with ChangeNotifier {
   Future<void> loadHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? historyString = prefs.getString('history');
-    if (historyString != null) {
-      List<dynamic> historyList = jsonDecode(historyString);
-      _history =
-          historyList.map((item) => Map<String, String>.from(item)).toList();
-      notifyListeners();
+    List<dynamic> historyList = jsonDecode(historyString);
+    _history =
+        historyList.map((item) => Map<String, String>.from(item)).toList();
+    notifyListeners();
     }
-  }
 
   // Save the current history to shared preferences.
   Future<void> _saveHistoryToPrefs() async {

@@ -7,7 +7,6 @@ import 'package:Lucerna/ecolight/lamp_stat.dart';
 import 'package:Lucerna/main.dart';
 import 'package:Lucerna/calculator/carbon_footprint.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import '../API_KEY_Config.dart';
 import 'common_widget.dart';
 import 'carbon_sutra.dart';
 
