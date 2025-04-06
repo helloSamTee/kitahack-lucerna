@@ -1,4 +1,6 @@
+import 'package:Lucerna/class_models/carbon_record.dart';
 import 'package:Lucerna/common_widget.dart';
+import 'package:Lucerna/firestore_service.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -297,6 +299,8 @@ class _ChatState extends State<chat> {
                   ? latestCarbonFootprint
                   : widget.carbonFootprint ?? '';
 
+              print('New Carbon Footprint Value: $carbonFootprintValue');
+
               Provider.of<HistoryProvider>(context, listen: false).addRecord(
                 widget.title ?? '',
                 widget.category ?? '',
@@ -306,6 +310,34 @@ class _ChatState extends State<chat> {
                 widget.distance ?? '',
                 widget.energyUsed ?? '',
               );
+
+              // Add record to Firestore
+              final user =
+                  Provider.of<AuthProvider>(context, listen: false).user;
+              if (user != null) {
+                print('user.uid: ${user.uid}');
+                try {
+                  final firestoreService = FirestoreService();
+                  await firestoreService.addCarbonFootprint(
+                    user.uid,
+                    CarbonRecord(
+                      title: widget.title ?? '',
+                      type: widget.category ?? '',
+                      value: carbonFootprintValue,
+                      dateTime: DateTime.now(),
+                      suggestion: widget.suggestion ?? '',
+                      vehicleType: widget.vehicleType,
+                      distance: widget.distance,
+                      energyUsed: widget.energyUsed,
+                    ),
+                  );
+                  print('Record added successfully to Firestore');
+                } catch (e) {
+                  print('Failed to add record to Firestore: $e');
+                }
+              } else {
+                print('No user is currently signed in.');
+              }
 
               Navigator.push(
                 context,
