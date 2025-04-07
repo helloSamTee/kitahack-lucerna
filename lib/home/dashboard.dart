@@ -149,8 +149,20 @@ class _dashboardState extends State<dashboard> {
                       ),
                     ),
                     const SizedBox(height: 10),
-
                     _buildLatestCarbonRecord(record, context),
+                    const SizedBox(height: 50),
+                    Center(
+                      child: Text(
+                        'Ads',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 20),
+                      ),
+                    ),
+                    Image.asset(
+                      'assets/ads.jpg',
+                      // width: 45,
+                    ),
                   ],
                 ),
               ),

@@ -5,9 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Lucerna/home/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
-// import 'package:pure_dart_ui/pure_dart_ui.dart' as ui;
-// import 'dart:html';
 import 'package:Lucerna/main.dart';
 import 'register_page.dart';
 
@@ -72,32 +69,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void initState() {
-    // _controller = VideoPlayerController.asset("videos/login.mp4");
-    // _initializeVideoPlayerFuture =
-    //     _controller.initialize().then((value) => _controller.play());
-    // _controller.setLooping(true);
-    // _controller.setVolume(0.0);
-    // _controller.setPlaybackSpeed(0.5);
-    // super.initState();
-
-    // controller = WebViewController()
-    //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    //   ..setNavigationDelegate(
-    //     NavigationDelegate(
-    //       onPageFinished: (String url) async {
-    //         // Inject JavaScript to scroll to center
-    //         await controller.runJavaScript('''
-    //           document.body.style.overflow = 'hidden';
-    //           window.scrollTo(window.innerWidth / 2, window.innerHeight / 2);
-    //         ''');
-    //       },
-    //     ),
-    //   )
-    //   ..loadRequest(Uri.parse('https://my.spline.design/cabinwoodscopy-b6bf6e8498ac797fa2b801392b03c330/'));
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -106,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
         theme: appTheme,
         home: Scaffold(
             body: SafeArea(
@@ -128,25 +99,6 @@ class _LoginPageState extends State<LoginPage> {
                     width: MediaQuery.of(context).size.width,
                     // height: MediaQuery.of(context).size.height * 0.3,
                   ),
-
-                  // Video
-                  // FutureBuilder(
-                  //   future: _initializeVideoPlayerFuture,
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.connectionState == ConnectionState.done) {
-                  //       return SizedBox(
-                  //         width:
-                  //             double.infinity, // Stretch to full screen width
-                  //         child: AspectRatio(
-                  //           aspectRatio: _controller.value.aspectRatio,
-                  //           child: VideoPlayer(_controller),
-                  //         ),
-                  //       );
-                  //     } else {
-                  //       return Center(child: CircularProgressIndicator());
-                  //     }
-                  //   },
-                  // ),
 
                   // Input Form
                   Padding(
