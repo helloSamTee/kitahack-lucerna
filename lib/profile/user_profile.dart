@@ -14,7 +14,7 @@ import 'package:Lucerna/calculator/common_widget.dart';
 import 'package:Lucerna/chat/chat.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  const UserProfile({super.key});
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -201,9 +201,9 @@ class _UserProfileState extends State<UserProfile>
   }
 
   void _showEditPasswordDialog() {
-    final TextEditingController _newPasswordController =
+    final TextEditingController newPasswordController =
         TextEditingController();
-    final TextEditingController _confirmPasswordController =
+    final TextEditingController confirmPasswordController =
         TextEditingController();
 
     showModalBottomSheet(
@@ -241,7 +241,7 @@ class _UserProfileState extends State<UserProfile>
                     child: Column(
                       children: [
                         TextField(
-                          controller: _newPasswordController,
+                          controller: newPasswordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: "New Password",
@@ -252,7 +252,7 @@ class _UserProfileState extends State<UserProfile>
                         ),
                         const SizedBox(height: 16),
                         TextField(
-                          controller: _confirmPasswordController,
+                          controller: confirmPasswordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: "Confirm Password",
@@ -274,9 +274,9 @@ class _UserProfileState extends State<UserProfile>
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
-                      final newPassword = _newPasswordController.text.trim();
+                      final newPassword = newPasswordController.text.trim();
                       final confirmPassword =
-                          _confirmPasswordController.text.trim();
+                          confirmPasswordController.text.trim();
 
                       if (newPassword.isEmpty || confirmPassword.isEmpty) {
                         setModalState(() {

@@ -14,6 +14,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class foodRecord extends StatefulWidget {
+  const foodRecord({super.key});
+
   @override
   _FoodRecordState createState() => _FoodRecordState();
 }

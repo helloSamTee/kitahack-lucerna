@@ -7,10 +7,10 @@ class WeeklyLineChart extends StatelessWidget {
   final Map<String, Map<String, double>> weeklyOffset;
 
   const WeeklyLineChart({
-    Key? key,
+    super.key,
     required this.weeklyFootprint,
     required this.weeklyOffset,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

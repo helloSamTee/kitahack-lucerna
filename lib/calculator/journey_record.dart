@@ -7,6 +7,8 @@ import 'common_widget.dart';
 import 'gemini_footprint.dart';
 
 class journeyRecord extends StatefulWidget {
+  const journeyRecord({super.key});
+
   @override
   _JourneyRecordState createState() => _JourneyRecordState();
 }

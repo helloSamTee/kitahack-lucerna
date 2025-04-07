@@ -4,8 +4,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class WeeklyBarChart extends StatelessWidget {
   final Map<String, Map<String, double>> weeklyFootprint;
 
-  const WeeklyBarChart({Key? key, required this.weeklyFootprint})
-      : super(key: key);
+  const WeeklyBarChart({super.key, required this.weeklyFootprint});
 
   @override
   Widget build(BuildContext context) {

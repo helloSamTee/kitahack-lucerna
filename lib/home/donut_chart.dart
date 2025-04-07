@@ -5,7 +5,7 @@ class DailyDonutChart extends StatelessWidget {
   double todayFootprint;
   double todayOffset;
 
-  DailyDonutChart({required this.todayFootprint, required this.todayOffset});
+  DailyDonutChart({super.key, required this.todayFootprint, required this.todayOffset});
 
   @override
   Widget build(BuildContext context) {

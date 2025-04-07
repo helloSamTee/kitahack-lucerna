@@ -7,6 +7,8 @@ import 'common_widget.dart';
 import 'gemini_footprint.dart';
 
 class energyRecord extends StatefulWidget {
+  const energyRecord({super.key});
+
   @override
   _EnergyRecordState createState() => _EnergyRecordState();
 }

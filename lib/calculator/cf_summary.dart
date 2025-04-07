@@ -21,7 +21,7 @@ class CFSummaryPage extends StatelessWidget {
   final Uint8List? image; // food image
 
   // Constructor to receive the data
-  CFSummaryPage({
+  CFSummaryPage({super.key, 
     required this.title,
     required this.category,
     required this.carbon_footprint,

@@ -10,8 +10,7 @@ enum BottomTab { ecolight, tracker, dashboard, chat, profile }
 class CommonBottomNavigationBar extends StatelessWidget {
   final BottomTab selectedTab;
 
-  const CommonBottomNavigationBar({Key? key, required this.selectedTab})
-      : super(key: key);
+  const CommonBottomNavigationBar({super.key, required this.selectedTab});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +87,7 @@ class CommonBottomNavigationBar extends StatelessWidget {
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const CommonAppBar({Key? key, required this.title}) : super(key: key);
+  const CommonAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

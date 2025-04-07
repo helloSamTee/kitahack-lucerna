@@ -1,5 +1,4 @@
 import 'package:Lucerna/API_KEY_Config.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Lucerna/class_models/user_model.dart';
 import 'package:Lucerna/auth_service.dart';

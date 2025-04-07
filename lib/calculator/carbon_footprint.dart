@@ -9,6 +9,8 @@ import 'history_provider.dart'; // Import the provider
 import 'package:Lucerna/auth_provider.dart'; // Import firebase provider
 
 class CarbonFootprintTracker extends StatefulWidget {
+  const CarbonFootprintTracker({super.key});
+
   @override
   _CarbonFootprintTrackerState createState() => _CarbonFootprintTrackerState();
 }
@@ -91,7 +93,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
         SizedBox(
           height: 15,
         ),
-        Container(
+        SizedBox(
           width: 90,
           child: ElevatedButton(
             onPressed: () {
@@ -170,7 +172,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                Container(
+                SizedBox(
                   height:
                       300, // Make sure it has a fixed height or use scrollable content
                   child: _buildHistoryList(historyProvider),

@@ -21,7 +21,7 @@ class chat extends StatefulWidget {
   final bool showAddRecordButton;
 
   const chat({
-    Key? key,
+    super.key,
     this.carbonFootprint,
     this.title,
     this.category,
@@ -30,7 +30,7 @@ class chat extends StatefulWidget {
     this.distance,
     this.energyUsed,
     this.showAddRecordButton = false,
-  }) : super(key: key);
+  });
 
   @override
   State<chat> createState() => _ChatState();

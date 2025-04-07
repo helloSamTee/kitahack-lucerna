@@ -8,7 +8,7 @@ class CarbonVisualizationScreen extends StatelessWidget {
   Map<String, Map<String, double>> weeklyFootprint;
   Map<String, Map<String, double>> weeklyOffset;
 
-  CarbonVisualizationScreen({
+  CarbonVisualizationScreen({super.key, 
     required this.weeklyFootprint,
     required this.weeklyOffset,
   });
