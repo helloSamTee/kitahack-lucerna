@@ -1,7 +1,5 @@
 # Lucerna
 
-# How to Run the Latest Version?
-In your terminal, run `flutter clean` -> `flutter pub get` -> `flutter build apk`
 # Check List
 - RAG
 - Food Classifier
@@ -13,13 +11,11 @@ In your terminal, run `flutter clean` -> `flutter pub get` -> `flutter build apk
 - pushreplace? currently is stacking widgets on top
 
 ## Overview
-This is a Flutter porject in Andriod Studio for implementing Lucerna - a smart eco mobile app that helps users to track, offset, and understand their carbon footprint in collaboration with the innovative Ecolight.
+This is a Flutter project in Andriod Studio for implementing Lucerna — a smart, eco-conscious mobile app that empowers users to track and understand their carbon footprint, while also monitoring real-time carbon offset from Ecolight. Our initiative directly supports SDG 12 and 13.  
+Ecolight is algae breeding lamp that captures carbon by harvesting light energy—whether from home lighting or outdoor environments. With the growth rate exceeding all terrestrial plants, 1 tons of algae can capture nearly 2 tons of carbon dioxide.  
+To make Ecolight a meaningful part of everyday life and city living, Lucerna app is developed to monitor user's carbon emissions, see real-time data on their carbon offset, and encourage eco-conscious learning with AI-powered features.   
 
-Ecolight is an algae-breeding street lamp that captures carbon, helping users reduce their carbon emissions and offset their daily activities. With the growth rate exceeding all terrestrial plants, 1 tons of algae can capture nearly 2 tons of carbon dioxide, just by harvesting the light energy from Ecolight that provides essential lighting that cities need. 
-
-For Ecolight to be part of the city landscape, Lucerna app is developed to monitor user's carbon emissions, see real-time data on their carbon offset, and encourage eco-conscious learning with AI-powered features.
-
-Credits are to be given to [Freepik](https://www.freepik.com/), from which all illustrations used in this app are sourced.
+Credits are to be given to [Freepik](https://www.freepik.com/) and [Spline](https://spline.design/), from which all illustrations and 3d model image used in this app are sourced respectively.
 
 
 
@@ -28,51 +24,61 @@ Here is what you can achieve through Lucerna source code:
 
 
 ### Carbon Tracking
-Daily, Weekly, and Monthly View: Visualize carbon emissions and offsets over time, with easy-to-access tabs for daily, weekly, and monthly statistics.
+Provide users with clear, interactive charts and graphs that track their weekly and daily carbon footprint, including detailed breakdowns by category.
+Users' carbon footprint are also compared with their carbon offset efforts —empowering users to understand their environmental impact at a glance.
 
 ### Carbon Offset with Ecolight
-Real-time Offset Updates: Track the total carbon offset achieved today with Ecolight in real time.
+Track the total carbon offset achieved with Ecolight and trasmit the relevant data in real time, ensuring continuous performance tracking.
 
 ### Carbon Footprint Calculation
-Activity-based Footprint Calculation: Log daily activities (Food, travel journey, or energy consumption) and leverage Gemini AI’s powerful algorithms to estimate the carbon footprint.
+Offers category-specific carbon calculations (food, travel, energy) based on user inputs, enabling precise, individualized tracking unlike competitors that rely on broad lifestyle estimates. For food records, snap a photo of your meal to instantly see its carbon footprint as our AI detects each food item and calculates its impact using Gemini.
 
 ### Eco-Education with AI
-AI-Powered Conversations: Engage with an AI assistant to learn more about environmental issues, up-to-date carbon footprint reduction strategies, and thus make eco-conscious choices in daily life.
+RAG-enhanced Conversations: Engage with an AI assistant to learn more about personalised carbon footprint reduction strategies, environmental issues, thus promoting eco-conscious choices in daily life.
 
 
 
 ## Instructions
 > [!IMPORTANT]  
-> If you encountered the error **Gemini API Resource Exhausted**, kindly replace the API key provided in lib/API_KEY_Config.dart (Line 5) with your own API key.     
-> Access [here](https://makersuite.google.com/app/apikey) to create your API key.
+> As our food detection model and RAG-powered chatbot take 3-5 mins to be initialised when the app first launched, feel free to explore other feature first. Good things (and greener futures) take a little time!
 
   
 1. Register/Login:
    Start by creating an account or logging in with your credentials (email and password).
-   > For app testing purpose, you may use user@gmail.com (email) and 123456 (password) to login.     
+   > For app testing purpose, you may use `user@gmail.com` (email) and `123456` (password) to login.     
 
-   > The latest version of Chrome is required for the interactive 3d model on login page to work as expected.
-   >[![](https://github.com/user-attachments/assets/353fbd86-4e61-45c3-92dc-c70a95d77cbb)](https://cloudmails-my.sharepoint.com/:v:/g/personal/tp070320_mail_apu_edu_my/EezOGMi7patNooj6RSzHqp4B9Z9C3RxQ15w4p3flthWN0A?e=OpWPtm)   
 
-3. Track Emissions and Offset:
-   Use the Lucerna dashboard to monitor carbon emissions and the offset generated by Ecolight, in a daily, weekly, or monthly timeframe.
+2. Dashboard
+   Use the Lucerna dashboard to monitor carbon emissions and the Ecolight's carbon offset, in a daily or weekly timeframe.
+   Besides your latest carbon footprint record, an environmental awareness advertisement is display too.
+   > [!TIP]
+   > The two daily charts will not be shown if no carbon footprint is recorded for today yet. Start tracking your carbon footprint to unlock your daily insights and drive meaning change :)
    
-4. Ecolight Offset Monitoring
+4. Ecolight Measures
    View real-time environmental data gathered by Ecolight to track CO₂ emissions and physical conditions.
    
-5. Calculate Carbon Footprint:
+5. Carbon Footprint:
    Record daily activities (Food, travel journey, or energy consumption) and use the Gemini AI-powered calculator for personalized carbon footprint insights.
    
-6. Learn with AI:
-   Start a conversation with Lucerna’s AI to stay informed on eco-friendly living and environmental issues.
+6. Chat with AI:
+   Start a conversation with Lucerna’s AI to discuss more on your actual carbon footprint record, while staying informed on data-backed eco-friendly practices and environmental issues.
+
+7. My Profile
+   Manage your profile (username and email) and API keys.
+  > [!NOTE]  
+  > If you encountered **Gemini API Resource Exhausted** error, kindly place your own API key in `API Keys` -> `Gemini API Key`.     
+  > Access [here](https://makersuite.google.com/app/apikey) to create your API key.
 
 
 
-## Development Environmetn Setup  
+## Development Environment Setup  
 
 
 1. Java version: JDK 17
 2. Gradle version: 8.10.2
+
+> [!TIP]  
+> To run the Flutter project for the first time, run `flutter clean` -> `flutter pub get` -> `flutter build apk`.
 
 
 
@@ -80,11 +86,11 @@ AI-Powered Conversations: Engage with an AI assistant to learn more about enviro
 Due to the time contraint, these features are still under development, and the codes provided are actually the non-functional prototypes (dummy codes):
 
 
-##### 1. Record Tracking
-All the carbon footprint records are stored per session only, in other words, the records are lost once the user exits Lucerna app.
+##### 1. Score & Reward System
+We are aiming to develop a Score & Reward System in collaboration with nonprofit organizations focused on climate action. This system will allow users to earn points by participating in verified environmental initiatives or committing to eco-friendly practices. Accumulated points can later be redeemed for meaningful rewards, encouraging ongoing engagement and promoting sustainable lifestyle choices.
 
-##### 2. Dashboard
-Without database, Lucerna is unable to generate charts and statistics that summarise the carbon footprint and offset of the user. The charts displayed currently are just for illustration purpose.
+##### 2. Carbon Offset Tracking
+While our platform currently supports real-time carbon offset estimation, this data is not yet persistently stored. As a result, users will not be able to view historical offset data or track long-term progress. We are working on enhancing this functionality to include offset history tracking and retrieval, ensuring users can monitor their full environmental impact over time.
 
 ##### 3. IoT Device Connection
 Lucerna collects real-time statistic only from a particular Ecolight product. Users are unable to connect their own Ecolight products to respective user accounts yet.
