@@ -52,7 +52,7 @@ RAG-enhanced Conversations: Engage with an AI assistant to learn more about pers
    Use the Lucerna dashboard to monitor carbon emissions and the Ecolight's carbon offset, in a daily or weekly timeframe.
    Besides your latest carbon footprint record, an environmental awareness advertisement is display too.
         
-   > [!TIP]
+   > [!TIP]  
    > The two daily charts will not be shown if no carbon footprint is recorded for today yet. Start tracking your carbon footprint to unlock your daily insights and drive meaning change :)
    
 4. Ecolight Measures   
