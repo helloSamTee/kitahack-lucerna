@@ -51,19 +51,19 @@ RAG-enhanced Conversations: Engage with an AI assistant to learn more about pers
 2. Dashboard
    Use the Lucerna dashboard to monitor carbon emissions and the Ecolight's carbon offset, in a daily or weekly timeframe.
    Besides your latest carbon footprint record, an environmental awareness advertisement is display too.
-   > [!TIP]
+   > [!TIP]  
    > The two daily charts will not be shown if no carbon footprint is recorded for today yet. Start tracking your carbon footprint to unlock your daily insights and drive meaning change :)
    
-4. Ecolight Measures
+4. Ecolight Measures   
    View real-time environmental data gathered by Ecolight to track CO₂ emissions and physical conditions.
    
-5. Carbon Footprint:
+5. Carbon Footprint   
    Record daily activities (Food, travel journey, or energy consumption) and use the Gemini AI-powered calculator for personalized carbon footprint insights.
    
-6. Chat with AI:
+6. Chat with AI   
    Start a conversation with Lucerna’s AI to discuss more on your actual carbon footprint record, while staying informed on data-backed eco-friendly practices and environmental issues.
 
-7. My Profile
+7. My Profile   
    Manage your profile (username and email) and API keys.
   > [!NOTE]  
   > If you encountered **Gemini API Resource Exhausted** error, kindly place your own API key in `API Keys` -> `Gemini API Key`.     
