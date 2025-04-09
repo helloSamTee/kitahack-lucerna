@@ -1,21 +1,93 @@
 # Lucerna
 
-# Check List
-- RAG
-- Food Classifier
-- Where to store AI model
-- Local Storage?
-- More tab (User Profile, Add your own API token)
-- Redesign and rebuild summary page
-- Store data in firestore
-- pushreplace? currently is stacking widgets on top
-
 ## Overview
 This is a Flutter project in Andriod Studio for implementing Lucerna — a smart, eco-conscious mobile app that empowers users to track and understand their carbon footprint, while also monitoring real-time carbon offset from Ecolight. Our initiative directly supports SDG 12 and 13.  
 Ecolight is algae breeding lamp that captures carbon by harvesting light energy—whether from home lighting or outdoor environments. With the growth rate exceeding all terrestrial plants, 1 tons of algae can capture nearly 2 tons of carbon dioxide.  
 To make Ecolight a meaningful part of everyday life and city living, Lucerna app is developed to monitor user's carbon emissions, see real-time data on their carbon offset, and encourage eco-conscious learning with AI-powered features.   
 
 Credits are to be given to [Freepik](https://www.freepik.com/) and [Spline](https://spline.design/), from which all illustrations and 3d model image used in this app are sourced respectively.
+
+
+
+## High-Level Project Structure
+
+```
+kitahack-lucerna/
+├── analysis_options.yaml              # Static analysis rules for Dart code
+├── devtools_options.yaml              # Configuration for Dart DevTools
+├── firebase.json                      # Firebase configuration file for web support
+├── Laptop2Rasp.py                     # Python script for Raspberry Pi integration
+├── pubspec.yaml                       # Project metadata and dependencies
+├── pubspec.lock                       # Lock file for dependency versions
+├── README.md                          # Project overview and setup instructions
+
+├── lib/                               # Flutter application source code
+│   ├── main.dart                      # Entry point: initializes Firebase, sets providers, theme, and starts app
+│   ├── API_KEY_Config.dart            # Stores and manages API key configurations
+│   ├── firebase_options.dart          # Firebase options generated for different platforms
+│   ├── firestore_service.dart         # Handles Firestore read/write operations
+│
+│   ├── auth_provider.dart             # Authentication state management
+│   ├── auth_service.dart              # Firebase Auth service logic
+│
+│   ├── calculator/                    # Carbon footprint calculation feature
+│   │   ├── carbon_footprint.dart      # Displays categories for footprint tracking and shows user history
+│   │   ├── cf_summary.dart            # Result screen showing calculated carbon footprint
+│   │   ├── common_widget.dart         # Reusable input widgets for footprint forms
+│   │   ├── energy_record.dart         # Form to record energy usage
+│   │   ├── food_record.dart           # Form to record food-related emissions
+│   │   ├── journey_record.dart        # Form to record transportation emissions
+│   │   ├── gemini_footprint.dart      # Integration with Gemini API to estimate carbon footprint
+│   │   └── history_provider.dart      # Manages carbon history state and updates UI
+│
+│   ├── chat/                          # AI Chatbot interface
+│   │   └── chat.dart                  # RAG-powered chatbot UI
+│
+│   ├── class_models/                  # Data model definitions, supporting conversion to and from Firestore-compatible JSON.
+│   │   ├── carbon_offset.dart         # Model for carbon offset data
+│   │   ├── carbon_record.dart         # Model for recorded emissions
+│   │   └── user_model.dart            # Model for user information
+│
+│   ├── common_widget.dart             # Shared widgets like app bar and bottom navigation
+│
+│   ├── ecolight/                      # Ecolight device integration
+│   │   └── lamp_stat.dart             # Displays real-time statistics from Ecolight device
+│
+│   ├── home/                          # Home dashboard and visualizations
+│   │   ├── dashboard.dart             # Main dashboard with latest records and visual charts
+│   │   ├── donut_chart.dart           # Donut chart comparing footprint vs. offset in a day
+│   │   ├── line_chart.dart            # Line chart for comparison of footprint vs. offset over a week
+│   │   ├── stackedBar_chart.dart      # Stacked bar chart for footprint by category over a week
+│   │   └── visualisation_slider.dart  # Swipeable widget for visual components
+│
+│   ├── login/                         # Authentication screens
+│   │   ├── login_page.dart            # User login interface
+│   │   └── register_page.dart         # User registration interface
+│
+│   └── profile/
+│       └── user_profile.dart          # User profile with editable info and API key settings
+
+├── RAG/                               # Retrieval-Augmented Generation (RAG) chatbot backend
+│   ├── config.json                    # Configuration for backend services
+│   ├── dockerfile                     # Docker setup for backend deployment
+│   ├── ingestion/                     # Documents and tools for RAG ingestion pipeline
+│   ├── requirements.txt               # Python dependencies for RAG
+│   ├── src/                           # Core logic for RAG chatbot
+│   ├── storageContext/                # Metadata storage logic
+│   └── vectorstore/                   # ChromaDB vector store for document retrieval
+
+├── android/                           # Android platform support
+├── ios/                               # iOS platform support
+├── linux/                             # Linux platform support
+├── macos/                             # macOS platform support
+├── web/                               # Web platform support
+└── windows/                           # Windows platform support
+```
+
+
+
+## Implementation of Google Technologies
+![Google Technologies in Lucerna](https://drive.google.com/uc?export=view&id=1iy7aOMh-o9AQECjy3RfdaOXPhm2PAiFq)
 
 
 
