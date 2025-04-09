@@ -46,33 +46,32 @@ RAG-enhanced Conversations: Engage with an AI assistant to learn more about pers
 1. Register/Login:
    Start by creating an account or logging in with your credentials (email and password).
    > For app testing purpose, you may use `user@gmail.com` (email) and `123456` (password) to login.
-   <img src="https://drive.google.com/uc?export=view&id=1VTR7iPK4KoPZd6LO397KLlVvecu7aHTd" alt="Lucerna Login" height="300"/>
-   ![Lucerna Login](https://drive.google.com/uc?export=view&id=1VTR7iPK4KoPZd6LO397KLlVvecu7aHTd)
+   <img src="https://drive.google.com/uc?export=view&id=1VTR7iPK4KoPZd6LO397KLlVvecu7aHTd" alt="Lucerna Login" height="500"/>
 
 2. Dashboard
    Use the Lucerna dashboard to monitor carbon emissions and the Ecolight's carbon offset, in a daily or weekly timeframe.
    Besides your latest carbon footprint record, an environmental awareness advertisement is display too.
    > The two daily charts will not be shown if no carbon footprint is recorded for today yet. Start tracking your carbon footprint to unlock your daily insights and drive meaning change :)
-   ![Lucerna Dashboard](https://drive.google.com/file/d/1VbjjH0o-WV9WT_iE7aT-ph2cL75xJAak/view?usp=sharing)
+   <img src="https://drive.google.com/uc?export=view&id=1VbjjH0o-WV9WT_iE7aT-ph2cL75xJAak" alt="Lucerna Dashboard" height="500"/>
    
-4. Ecolight Measures   
+3. Ecolight Measures   
    View real-time environmental data gathered by Ecolight to track CO₂ emissions and physical conditions.
-   ![Lucerna Ecolight Measures](https://drive.google.com/file/d/1VYe7gv-yHIVxkQicDFjUUBCO720AyqZl/view?usp=sharing)  
+   <img src="https://drive.google.com/uc?export=view&id=1VYe7gv-yHIVxkQicDFjUUBCO720AyqZl" alt="Lucerna Ecolight Measures" height="500"/>
    
-6. Carbon Footprint   
+4. Carbon Footprint   
    Record daily activities (Food, travel journey, or energy consumption) and use the Gemini AI-powered calculator for personalized carbon footprint insights.
-   ![Lucerna Carbon Footprint]([http://url/to/img.png](https://drive.google.com/file/d/1VWyNxrj_f82zrpp-71mhTzBE9L6ElaZJ/view?usp=sharing))
+   <img src="https://drive.google.com/uc?export=view&id=1VWyNxrj_f82zrpp-71mhTzBE9L6ElaZJ" alt="Lucerna Carbon Footprint" height="500"/>
    
-7. Chat with AI   
+5. Chat with AI   
    Start a conversation with Lucerna’s AI to discuss more on your actual carbon footprint record, while staying informed on data-backed eco-friendly practices and environmental issues.
-   ![Lucerna Chat with AI](https://drive.google.com/file/d/1VWGpXuzAzVUHmJSyHBD8aD-59hYsk3vz/view?usp=sharing)  
+   <img src="https://drive.google.com/uc?export=view&id=1VWGpXuzAzVUHmJSyHBD8aD-59hYsk3vz" alt="Lucerna Chat with AI" height="500"/>
 
-9. My Profile   
+7. My Profile   
    Manage your profile (username and email) and API keys.
    > [!NOTE]
    > If you encountered **Gemini API Resource Exhausted** error, kindly place your own API key in `API Keys` -> `Gemini API Key`.
    > Access [here](https://makersuite.google.com/app/apikey) to create your API key.
-   ![Lucerna My Profile](https://drive.google.com/file/d/1VWMbV-SmbfROmCuGbTy1cXj9Root4G7w/view?usp=sharing)  
+   <img src="https://drive.google.com/uc?export=view&id=1VWMbV-SmbfROmCuGbTy1cXj9Root4G7w" alt="Lucerna My Profile" height="500"/>
 
 
 
