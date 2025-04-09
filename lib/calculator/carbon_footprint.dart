@@ -37,8 +37,6 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
       backgroundColor: Color.fromRGBO(
           200, 200, 200, 1), // const Color.fromRGBO(173, 191, 127, 1),
       body: SafeArea(
-          child: SingleChildScrollView(
-        // Wrapping the entire body in a SingleChildScrollView
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -68,10 +66,12 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
               ],
             ),
             const SizedBox(height: 50),
-            _buildHistorySection(context, historyProvider),
+            Expanded(
+              child: _buildHistorySection(context, historyProvider),
+            ),
           ],
         ),
-      )),
+      ),
       appBar: CommonAppBar(title: "Carbon Footprint"),
       bottomNavigationBar:
           CommonBottomNavigationBar(selectedTab: BottomTab.tracker),
@@ -157,7 +157,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
               ),
             ],
           ),
-          constraints: const BoxConstraints(maxHeight: 400),
+          constraints: const BoxConstraints(minHeight: 200),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(30, 20, 30, 15),
             child: Column(
@@ -172,9 +172,7 @@ class _CarbonFootprintTrackerState extends State<CarbonFootprintTracker> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                SizedBox(
-                  height:
-                      300, // Make sure it has a fixed height or use scrollable content
+                Expanded(
                   child: _buildHistoryList(historyProvider),
                 ),
                 SizedBox(

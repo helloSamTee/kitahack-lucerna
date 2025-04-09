@@ -202,7 +202,7 @@ class _ChatState extends State<chat> {
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       color: const Color(
-                          0xFFB7C49D), //Color.fromRGBO(200, 200, 200,1), //
+                          0xFFD3DDC1), //Color.fromRGBO(200, 200, 200,1), //
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
