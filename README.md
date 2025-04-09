@@ -46,7 +46,7 @@ RAG-enhanced Conversations: Engage with an AI assistant to learn more about pers
 1. Register/Login:
    Start by creating an account or logging in with your credentials (email and password).
    > For app testing purpose, you may use `user@gmail.com` (email) and `123456` (password) to login.
-   ![Lucerna Login](https://drive.google.com/file/d/1VTR7iPK4KoPZd6LO397KLlVvecu7aHTd/view?usp=sharing)  
+   ![Lucerna Login](https://drive.google.com/uc?export=view&id=1VTR7iPK4KoPZd6LO397KLlVvecu7aHTd)
 
 2. Dashboard
    Use the Lucerna dashboard to monitor carbon emissions and the Ecolight's carbon offset, in a daily or weekly timeframe.
