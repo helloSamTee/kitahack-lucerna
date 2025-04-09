@@ -150,8 +150,8 @@ RAG-enhanced Conversations: Engage with an AI assistant to learn more about pers
 ## Development Environment Setup  
 
 
-1. Java version: JDK 17
-2. Gradle version: 8.10.2
+1. Java version: `22.0.2`
+2. Gradle version: `8.3`
 
 > [!TIP]  
 > To run the Flutter project for the first time, run `flutter clean` -> `flutter pub get` -> `flutter build apk`.
