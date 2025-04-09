@@ -45,28 +45,33 @@ RAG-enhanced Conversations: Engage with an AI assistant to learn more about pers
   
 1. Register/Login:
    Start by creating an account or logging in with your credentials (email and password).
-   > For app testing purpose, you may use `user@gmail.com` (email) and `123456` (password) to login.     
-
+   > For app testing purpose, you may use `user@gmail.com` (email) and `123456` (password) to login.
+   ![Lucerna Login](https://drive.google.com/file/d/1VTR7iPK4KoPZd6LO397KLlVvecu7aHTd/view?usp=sharing)  
 
 2. Dashboard
    Use the Lucerna dashboard to monitor carbon emissions and the Ecolight's carbon offset, in a daily or weekly timeframe.
    Besides your latest carbon footprint record, an environmental awareness advertisement is display too.
    > The two daily charts will not be shown if no carbon footprint is recorded for today yet. Start tracking your carbon footprint to unlock your daily insights and drive meaning change :)
+   ![Lucerna Dashboard](https://drive.google.com/file/d/1VbjjH0o-WV9WT_iE7aT-ph2cL75xJAak/view?usp=sharing)
    
 4. Ecolight Measures   
    View real-time environmental data gathered by Ecolight to track CO₂ emissions and physical conditions.
+   ![Lucerna Ecolight Measures](https://drive.google.com/file/d/1VYe7gv-yHIVxkQicDFjUUBCO720AyqZl/view?usp=sharing)  
    
-5. Carbon Footprint   
+6. Carbon Footprint   
    Record daily activities (Food, travel journey, or energy consumption) and use the Gemini AI-powered calculator for personalized carbon footprint insights.
+   ![Lucerna Carbon Footprint]([http://url/to/img.png](https://drive.google.com/file/d/1VWyNxrj_f82zrpp-71mhTzBE9L6ElaZJ/view?usp=sharing))
    
-6. Chat with AI   
+7. Chat with AI   
    Start a conversation with Lucerna’s AI to discuss more on your actual carbon footprint record, while staying informed on data-backed eco-friendly practices and environmental issues.
+   ![Lucerna Chat with AI](https://drive.google.com/file/d/1VWGpXuzAzVUHmJSyHBD8aD-59hYsk3vz/view?usp=sharing)  
 
-7. My Profile   
+9. My Profile   
    Manage your profile (username and email) and API keys.
-  > [!NOTE]  
-  > If you encountered **Gemini API Resource Exhausted** error, kindly place your own API key in `API Keys` -> `Gemini API Key`.     
-  > Access [here](https://makersuite.google.com/app/apikey) to create your API key.
+   > [!NOTE]
+   > If you encountered **Gemini API Resource Exhausted** error, kindly place your own API key in `API Keys` -> `Gemini API Key`.
+   > Access [here](https://makersuite.google.com/app/apikey) to create your API key.
+   ![Lucerna My Profile](https://drive.google.com/file/d/1VWMbV-SmbfROmCuGbTy1cXj9Root4G7w/view?usp=sharing)  
 
 
 
